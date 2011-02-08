@@ -13,7 +13,7 @@ setup(
 
     # metadata for upload to PyPI
     author = "John Wehr",
-    author_email = "johnwehr@hiidef.com",
+    author_email = "johnwehr@gmail.com",
     description = "http://fetchapp.com API Python Client",
     license = "MIT License",
     keywords = "fetchapp client",
