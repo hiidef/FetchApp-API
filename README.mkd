@@ -269,7 +269,9 @@ Basic Usage
 
 	True
 
-**Create an order.** *skus* should be a list of SKUs to update.
+**Create an order.** *skus* should be a list of SKUs to update. 
+*expiration_date* can be a string or a datetime. *send_email* should be
+a boolean.
 
     fa.order_create(order_id, title, first_name, last_name, email, skus, expiration_date=None, send_email=None, download_limit=None, ignore_items=None)
 
@@ -287,7 +289,9 @@ Basic Usage
 	    'title': 'b6b92078-8152-4d6d-91ed-5bc288454e4f',
 	    'total': 0.0}
 	
-**Update a specified order.** *skus* should be a list of SKUs to update.
+**Update a specified order.** *skus* should be a list of SKUs to update. 
+*expiration_date* can be a string or a datetime. *send_email* should be
+a boolean.
 
     fa.order_update(
 		order_id=None, 
