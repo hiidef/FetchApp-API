@@ -1,5 +1,5 @@
-FetchApp API
-============
+Unofficial FetchApp API Python Client
+=====================================
 
 Fetch is a digital delivery application that makes selling downloadable
 products simple. It seamlessly integrates with popular carts and payment
