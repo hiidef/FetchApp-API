@@ -6,6 +6,8 @@ products simple. It seamlessly integrates with popular carts and payment
 systems like Shopify, FoxyCart, PayPal, Google Checkout, and more. Fetch
 is hosted software so there's nothing to install and works on any platform.
 
+Additional documentation is available at [fetchapp.com/pages/help-api] http://www.fetchapp.com/pages/help-api
+
 Installation
 ------------
 
@@ -16,9 +18,11 @@ If easy_install is available, you can use:
 Basic Usage
 -----------
 
+**Instantiate FetchApp.**
+
     fa = FetchApp(key, token)
 
-Create a new account
+**Create a new account.** *url* is a URL slug, example: "example_url". 
 
     fa.account_create(name, first_name, last_name, email, url)
     
@@ -32,7 +36,7 @@ Create a new account
 	    'order_expiration_in_hours': None,
 	    'url': '24771755c6d.fetchapp.com'}
 
-Information about your account.
+**Information about your account.**
 
     fa.account()  
     
@@ -46,15 +50,17 @@ Information about your account.
 	    'order_expiration_in_hours': None,
 	    'url': '24771755c6d.fetchapp.com'}
 	
-Generate a new API token (this replaces your existing one)
+**Generate a new API token (this replaces your existing one).**
  	
     fa.new_token()
 
-List your downloads
+	'example_token'
+
+**List your downloads.**
  	
     fa.downloads(per_page=None, page=None)
 
-List your items
+**List your items.**
  	
     fa.items(per_page=None, page=None, sku=None)
     
@@ -88,7 +94,7 @@ List your items
 	        'size_bytes': 13,
 	        'sku': 'test_1'}]
 	
-List details of a specified item
+**List details of a specified item.**
  	
     fa.item_details(sku)
     
@@ -103,11 +109,11 @@ List details of a specified item
 	    'price': 74.52,
 	    'sku': 'b2882527-8314-4f4f-9de7-3eee6655d8e0'}
 
-Delete a specified item
+**Delete a specified item.**
  	
     fa.item_delete(sku)
 
-Create a specified item
+**Create a specified item.**
  	
     fa.item_create(sku, name, price)
     
@@ -122,19 +128,44 @@ Create a specified item
 	    'price': 74.52,
 	    'sku': 'b2882527-8314-4f4f-9de7-3eee6655d8e0'}
 
-Update a specified item
+**Update a specified item.**
  	
     fa.item_update(sku, new_sku=None, name=None, price=None)
+	
+	{   'created_at': datetime.datetime(2011, 2, 8, 8, 25, 38, tzinfo=tzutc()),
+	    'download_count': 0,
+	    'downloads': [],
+	    'files': [],
+	    'guid': None,
+	    'id': '090331ff-6e02-4ac9-b9e8-a5266c257e72',
+	    'name': 'd713021d-7fda-4737-b133-9d31cb7e1846',
+	    'order_count': 0,
+	    'price': 34.73,
+	    'sku': '090331ff-6e02-4ac9-b9e8-a5266c257e72'}
 
-List all the files for an item.
+**List all the files for an item..**
  	
     fa.item_list_files(sku)
 
-List all the downloads for an item
+	[   {   'filename': 'sample.txt',
+			'size_bytes': 13.0,
+			'content_type': 'binary/octet-stream',
+			'permalink': '/permalink/werwa',
+			'permalink_full': 'http://pixellent.fetchapp.com/permalink/werwa'}]
+
+**List all the downloads for an item.**
  	
     fa.item_list_downloads(sku)
 
-List all your orders
+	[   {   'filename': 'sample.txt',
+	        'id': '23570',
+			'item_sku': 'example_sku',
+	        'ip_address': '76.128.69.128',
+			'order_id': 1002,
+	        'size_bytes': 13.0,
+	        'downloaded_at': datetime.datetime(2011, 2, 8, 4, 19, 17, tzinfo=tzutc())}]
+
+**List all your orders.**
  	
     fa.orders()
     
@@ -169,7 +200,7 @@ List all your orders
 	        'title': '2c1a9e18-604d-4b67-b837-dbcc690df72d',
 	        'total': 11.11}]
 
-Details of a specified order
+**Details of a specified order.**
  	
     fa.order_details(order_id)
 	
@@ -204,25 +235,25 @@ Details of a specified order
 	    'title': '91a1f65b-828c-45ec-92a9-042d49f04397',
 	    'total': 11.11}
 	
-Delete a specified order
+**Delete a specified order.**
  	
     fa.order_delete(order_id)
     
 	True
 	
-Expire a specified order
+**Expire a specified order.**
  	
     fa.order_expire(order_id)
 	
 	True
 
-Send download email of a specified order
+**Send download email of a specified order.**
  	
     fa.order_send_email(order_id)
 
 	True
 
-Create an order
+**Create an order.**
 
     fa.order_create(order_id, title, first_name, last_name, email, skus, expiration_date=None, send_email=None, download_limit=None, ignore_items=None)
 
@@ -240,7 +271,7 @@ Create an order
 	    'title': 'b6b92078-8152-4d6d-91ed-5bc288454e4f',
 	    'total': 0.0}
 	
-Update a specified order
+**Update a specified order.**
 
     fa.order_update(
 		order_id=None, 
@@ -285,6 +316,13 @@ Update a specified order
 	    'title': '91a1f65b-828c-45ec-92a9-042d49f04397',
 	    'total': 11.11}
 	
-List your uploads
+**List your uploads.**
  	
     fa.uploads(per_page=None, page=None)
+    
+	[   {   'filename': 'sample.txt',
+	        'id': '23570',
+	        'ip_address': '76.97.69.77',
+	        'size_bytes': 13.0,
+	        'uploaded_at': datetime.datetime(2011, 2, 8, 4, 19, 17, tzinfo=tzutc())}]
+	

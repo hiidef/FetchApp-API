@@ -71,8 +71,7 @@ class FetchApp(object):
         
         path = "/api/new_token"
         xmldoc = self._call(path)
-        data = self._deserialize(xmldoc)
-        return data["message"]
+        return self._deserialize(xmldoc)
         
     def downloads(self, per_page=None, page=None):
         """List your downloads"""
