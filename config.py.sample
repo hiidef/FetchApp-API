@@ -1,0 +1,8 @@
+"""
+See http://YOUR_STORE_NAME.fetchapp.com/admin/settings/payments to get key/token.
+"""
+
+FETCHAPP_KEY = "XXXXXX"
+FETCHAPP_TOKEN = "XXXXXX"
+DEBUG = True
+TEST_EMAIL = "name@example.com"

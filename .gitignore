@@ -1,2 +1,4 @@
-tests/config.py
+env/
+.DS_Store
+config.py
 *.pyc

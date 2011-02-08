@@ -8,7 +8,7 @@ setup(
 
     packages = find_packages(),
 
-    install_requires = [],
+    install_requires = ["lxml", "python-dateutil"],
     include_package_data = True,
 
     # metadata for upload to PyPI
@@ -17,6 +17,6 @@ setup(
     description = "http://fetchapp.com API Python Client",
     license = "MIT License",
     keywords = "fetchapp client",
-    url = "http://github.com/rays/hiispider"
+    url = "https://github.com/wehriam/FetchApp-API"
 
 )
