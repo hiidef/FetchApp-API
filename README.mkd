@@ -15,7 +15,10 @@ If easy_install is available, you can use:
 
     easy_install https://github.com/wehriam/FetchApp-API/tarball/develop
 
-To run the tests, copy config.py.sample to config.py and modify with
+Tests
+-----
+
+To run unit tests, copy config.py.sample to config.py and modify with
 your account information.
 
 Basic Usage
