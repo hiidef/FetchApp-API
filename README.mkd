@@ -6,14 +6,14 @@ products simple. It seamlessly integrates with popular carts and payment
 systems like Shopify, FoxyCart, PayPal, Google Checkout, and more. Fetch
 is hosted software so there's nothing to install and works on any platform.
 
-Additional documentation is available at [fetchapp.com/pages/help-api] http://www.fetchapp.com/pages/help-api
+Additional documentation is available at [fetchapp.com/pages/help-api](http://www.fetchapp.com/pages/help-api).
 
 Installation
 ------------
 
 If easy_install is available, you can use:
 
-    easy_install https://github.com/wehriam/FetchApp-API/tarball/develop
+    easy_install [https://github.com/wehriam/FetchApp-API/tarball/develop](https://github.com/wehriam/FetchApp-API/tarball/develop)
 
 To run the tests, copy config.py.sample to config.py and modify with
 your account information.
