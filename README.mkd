@@ -60,6 +60,14 @@ Basic Usage
  	
     fa.downloads(per_page=None, page=None)
 
+	[   {   'filename': 'sample.txt',
+	        'id': '23570',
+			'item_sku': 'example_sku',
+	        'ip_address': '76.128.69.128',
+			'order_id': '1002',
+	        'size_bytes': 13.0,
+	        'downloaded_at': datetime.datetime(2011, 2, 8, 4, 19, 17, tzinfo=tzutc())}]
+
 **List your items.**
  	
     fa.items(per_page=None, page=None, sku=None)
@@ -112,6 +120,8 @@ Basic Usage
 **Delete a specified item.**
  	
     fa.item_delete(sku)
+	
+	True
 
 **Create a specified item.**
  	
@@ -161,7 +171,7 @@ Basic Usage
 	        'id': '23570',
 			'item_sku': 'example_sku',
 	        'ip_address': '76.128.69.128',
-			'order_id': 1002,
+			'order_id': '1002',
 	        'size_bytes': 13.0,
 	        'downloaded_at': datetime.datetime(2011, 2, 8, 4, 19, 17, tzinfo=tzutc())}]
 
@@ -253,7 +263,7 @@ Basic Usage
 
 	True
 
-**Create an order.**
+**Create an order.** *skus* should be a list of SKUs to update.
 
     fa.order_create(order_id, title, first_name, last_name, email, skus, expiration_date=None, send_email=None, download_limit=None, ignore_items=None)
 
@@ -271,7 +281,7 @@ Basic Usage
 	    'title': 'b6b92078-8152-4d6d-91ed-5bc288454e4f',
 	    'total': 0.0}
 	
-**Update a specified order.**
+**Update a specified order.** *skus* should be a list of SKUs to update.
 
     fa.order_update(
 		order_id=None, 
