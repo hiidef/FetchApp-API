@@ -211,7 +211,7 @@ class FetchAppTest(unittest.TestCase):
         self.assertTrue(isinstance(downloads, list))
         if config.DEBUG: 
             PP.pprint("FetchApp.downloads(...)")
-            PP.pprint(uplodownloadsads)
+            PP.pprint(downloads)
 
     def test_07_new_token(self):
         token = self.fa.new_token()
