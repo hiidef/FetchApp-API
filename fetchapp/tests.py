@@ -126,7 +126,7 @@ class FetchAppTest(unittest.TestCase):
             PP.pprint("FetchApp.orders(...)")
             PP.pprint(orders)'''
 
-    def test_04_order(self):
+    '''def test_04_order(self):
         # Create a product to order.
         products =  self.fa.products()
         self.assertTrue(len(products) > 0)
@@ -209,14 +209,14 @@ class FetchAppTest(unittest.TestCase):
         self.assertTrue(response)
         # Delete the order
         response = self.fa.order_delete(order["id"])
-        self.assertTrue(response)
+        self.assertTrue(response)'''
 
-    '''def test_05_uploads(self):
-        uploads = self.fa.uploads()
-        self.assertTrue(isinstance(uploads, list))
+    def test_05_files(self):
+        files = self.fa.files()
+        self.assertTrue(isinstance(files, list))
         if config.DEBUG:
-            PP.pprint("FetchApp.uploads(...)")
-            PP.pprint(uploads)'''
+            PP.pprint("FetchApp.files(...)")
+            PP.pprint(files)
 
     '''def test_06_downloads(self):
         downloads = self.fa.downloads()

@@ -323,10 +323,10 @@ class FetchApp(object):
             content_type="application/xml")
         return self._deserialize(xmldoc)
     
-    def uploads(self, per_page=None, page=None):
-        """List your uploads"""
+    def files(self, per_page=None, page=None):
+        """List your files"""
         
-        path = "/api/uploads"
+        path = "/api/v2/files"
         parameters = {}
         if per_page is not None:
             parameters["per_page"] = int(per_page)
