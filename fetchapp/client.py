@@ -76,7 +76,7 @@ class FetchApp(object):
     def downloads(self, per_page=None, page=None):
         """List your downloads"""
         
-        path = "/api/downloads"
+        path = "/api/v2/downloads"
         parameters = {}
         if per_page is not None:
             parameters["per_page"] = int(per_page)

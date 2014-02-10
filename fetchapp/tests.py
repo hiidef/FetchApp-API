@@ -211,19 +211,19 @@ class FetchAppTest(unittest.TestCase):
         response = self.fa.order_delete(order["id"])
         self.assertTrue(response)'''
 
-    def test_05_files(self):
+    '''def test_05_files(self):
         files = self.fa.files()
         self.assertTrue(isinstance(files, list))
         if config.DEBUG:
             PP.pprint("FetchApp.files(...)")
-            PP.pprint(files)
+            PP.pprint(files)'''
 
-    '''def test_06_downloads(self):
+    def test_06_downloads(self):
         downloads = self.fa.downloads()
         self.assertTrue(isinstance(downloads, list))
         if config.DEBUG:
             PP.pprint("FetchApp.downloads(...)")
-            PP.pprint(downloads)'''
+            PP.pprint(downloads)
 
     '''def test_07_new_token(self):
         token = self.fa.new_token()
