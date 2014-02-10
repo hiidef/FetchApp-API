@@ -56,14 +56,14 @@ class FetchAppTest(unittest.TestCase):
             PP.pprint("FetchApp.account(...)")
             PP.pprint(account_data)
             
-    def test_01_items(self):
+    '''def test_01_items(self):
         items =  self.fa.items()
         self.assertTrue(isinstance(items, list))
         if config.DEBUG: 
             PP.pprint("FetchApp.items(...)")
-            PP.pprint(items)
+            PP.pprint(items)'''
             
-    def test_02_item(self):
+    '''def test_02_item(self):
         # Create
         sku = str(uuid4())
         name = str(uuid4())
@@ -111,16 +111,16 @@ class FetchAppTest(unittest.TestCase):
             PP.pprint("FetchApp.item_update(...)")
             PP.pprint(item_details)
         response = self.fa.item_delete(item["sku"])
-        self.assertTrue(response)
+        self.assertTrue(response)'''
 
-    def test_03_orders(self):
+    '''def test_03_orders(self):
         orders = self.fa.orders()
         self.assertTrue(isinstance(orders, list))         
         if config.DEBUG: 
             PP.pprint("FetchApp.orders(...)")
-            PP.pprint(orders)
+            PP.pprint(orders)'''
                    
-    def test_04_order(self):
+    '''def test_04_order(self):
         # Create an item to order.
         items =  self.fa.items()
         self.assertTrue(len(items) > 0)
@@ -197,25 +197,25 @@ class FetchAppTest(unittest.TestCase):
         self.assertTrue(response)
         # Delete the order
         response = self.fa.order_delete(order["id"])
-        self.assertTrue(response)
+        self.assertTrue(response)'''
         
-    def test_05_uploads(self):
+    '''def test_05_uploads(self):
         uploads = self.fa.uploads()
         self.assertTrue(isinstance(uploads, list))
         if config.DEBUG: 
             PP.pprint("FetchApp.uploads(...)")
-            PP.pprint(uploads)
+            PP.pprint(uploads)'''
 
-    def test_06_downloads(self):
+    '''def test_06_downloads(self):
         downloads = self.fa.downloads()
         self.assertTrue(isinstance(downloads, list))
         if config.DEBUG: 
             PP.pprint("FetchApp.downloads(...)")
-            PP.pprint(downloads)
+            PP.pprint(downloads)'''
 
-    def test_07_new_token(self):
+    '''def test_07_new_token(self):
         token = self.fa.new_token()
         if config.DEBUG: 
             PP.pprint("FetchApp.token(...)")
-            PP.pprint(token)    
+            PP.pprint(token)'''  
 

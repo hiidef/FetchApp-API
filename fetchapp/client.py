@@ -34,7 +34,7 @@ class InvalidHTTPRequestTypeException(Exception):
 class FetchApp(object):
     """
     Support for the FetchApp API.
-    http://www.fetchapp.com/pages/help-api
+    http://www.fetchapp.com/pages/help-api2
     """
 
     host = "app.fetchapp.com"
@@ -53,7 +53,7 @@ class FetchApp(object):
         etree.SubElement(account, "email").text = unicode(email)
         etree.SubElement(account, "url").text = unicode(url)
         request = urllib2.Request(
-            "http://%s%s" % (self.host, '/api/account/create'), 
+            "http://%s%s" % (self.host, '/api/v2/account/create'), 
             data=etree.tostring(account, encoding="utf-8", xml_declaration=True))
         request.add_header('Content-Type', "application/xml")
         xmldoc = self._make_request(request)
@@ -62,14 +62,14 @@ class FetchApp(object):
     def account(self):
         """Information about your account."""
         
-        path = "/api/account"
+        path = "/api/v2/account"
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
 
     def new_token(self):
         """Generate a new API token (this replaces your existing one)"""
         
-        path = "/api/new_token"
+        path = "/api/v2/new_token"
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
         
