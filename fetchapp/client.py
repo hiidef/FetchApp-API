@@ -83,12 +83,12 @@ class FetchApp(object):
         if page is not None:
             parameters["page"] = int(page)
         xmldoc = self._call(path, parameters=parameters)
-        return self._deserialize(xmldoc)        
+        return self._deserialize(xmldoc)
     
     def products(self, per_page=None, page=None, sku=None):
         """List your products"""
         
-        path = "/api/items"
+        path = "/api/v2/products"
         if sku is not None:
             path = "%s/:%s" % (path, sku)
         parameters = {}
@@ -374,7 +374,6 @@ class FetchApp(object):
         
     def _make_request(self, request):
         opener = urllib2.build_opener(urllib2.HTTPHandler)
-        import ipdb; ipdb.set_trace()
         try:
             response = opener.open(request)
         except urllib2.HTTPError, e:
