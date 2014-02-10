@@ -140,7 +140,7 @@ class FetchAppTest(unittest.TestCase):
         custom_fields = []
         TEST_NUM_FIELDS = 2
         for i in range(1, TEST_NUM_FIELDS+1):
-            custom_fields.append(i)
+            custom_fields.append(str(uuid4()))
         email = config.TEST_EMAIL
         skus = [product["sku"]]
         expiration_date = datetime.fromtimestamp(time.time() + 24 * 60 * 60)
@@ -170,7 +170,7 @@ class FetchAppTest(unittest.TestCase):
         new_custom_fields = []
         TEST_NUM_FIELDS = 3
         for i in range(1, TEST_NUM_FIELDS+1):
-            new_custom_fields.append(i+99)
+            new_custom_fields.append(str(uuid4()))
         new_skus = [product["sku"]]
         new_expiration_date = datetime.fromtimestamp(time.time() + 24 * 60 * 60)
         new_send_email = True
