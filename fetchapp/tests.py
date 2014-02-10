@@ -23,16 +23,17 @@ See: See http://YOUR_STORE_NAME.fetchapp.com/admin/settings/payments
 
 PP = pprint.PrettyPrinter(indent=4)
 
+
 class FetchAppTest(unittest.TestCase):
-    
+
     def setUp(self):
         self.fa = FetchApp(config.FETCHAPP_KEY, config.FETCHAPP_TOKEN)
         pass
 
     def tearDown(self):
         pass
-    
-    def test_00_account(self):
+
+    '''def test_00_account(self):
         name = str(uuid4())
         first_name = str(uuid4())
         last_name = str(uuid4())
@@ -46,23 +47,23 @@ class FetchAppTest(unittest.TestCase):
             url
         )
         self.assertTrue("api_key" in account)
-        if config.DEBUG: 
+        if config.DEBUG:
             PP.pprint("FetchApp.account_create(...)")
             PP.pprint(account)
         fa = FetchApp(account["api_key"], account["api_token"])
         account_data = fa.account()
         self.assertTrue("email" in account_data)
-        if config.DEBUG: 
+        if config.DEBUG:
             PP.pprint("FetchApp.account(...)")
-            PP.pprint(account_data)
-            
-    '''def test_01_items(self):
-        items =  self.fa.items()
-        self.assertTrue(isinstance(items, list))
-        if config.DEBUG: 
-            PP.pprint("FetchApp.items(...)")
-            PP.pprint(items)'''
-            
+            PP.pprint(account_data)'''
+
+    def test_01_items(self):
+        products =  self.fa.products()
+        self.assertTrue(isinstance(products, list))
+        if config.DEBUG:
+            PP.pprint("FetchApp.products(...)")
+            PP.pprint(products)
+
     '''def test_02_item(self):
         # Create
         sku = str(uuid4())
@@ -73,25 +74,25 @@ class FetchAppTest(unittest.TestCase):
             name,
             price)
         self.assertTrue("sku" in item)
-        if config.DEBUG: 
+        if config.DEBUG:
             PP.pprint("FetchApp.item_create(...)")
             PP.pprint(item)
         # List files
         files = self.fa.item_list_files(item["sku"])
         self.assertTrue(isinstance(files, list))
-        if config.DEBUG: 
+        if config.DEBUG:
             PP.pprint("FetchApp.item_list_files(...)")
             PP.pprint(files)
         # List downloads
         downloads = self.fa.item_list_downloads(item["sku"])
         self.assertTrue(isinstance(downloads, list))
-        if config.DEBUG: 
+        if config.DEBUG:
             PP.pprint("FetchApp.item_list_downloads(...)")
             PP.pprint(downloads)
         # Details
         item_details = self.fa.item_details(item["sku"])
         self.assertTrue("sku" in item_details)
-        if config.DEBUG: 
+        if config.DEBUG:
             PP.pprint("FetchApp.item_details(...)")
             PP.pprint(item_details)
         # Update
@@ -107,7 +108,7 @@ class FetchAppTest(unittest.TestCase):
         self.assertEqual(item_details["sku"], new_sku)
         self.assertEqual(item_details["name"], new_name)
         self.assertEqual(item_details["price"], float(new_price))
-        if config.DEBUG: 
+        if config.DEBUG:
             PP.pprint("FetchApp.item_update(...)")
             PP.pprint(item_details)
         response = self.fa.item_delete(item["sku"])
@@ -115,11 +116,11 @@ class FetchAppTest(unittest.TestCase):
 
     '''def test_03_orders(self):
         orders = self.fa.orders()
-        self.assertTrue(isinstance(orders, list))         
-        if config.DEBUG: 
+        self.assertTrue(isinstance(orders, list))
+        if config.DEBUG:
             PP.pprint("FetchApp.orders(...)")
             PP.pprint(orders)'''
-                   
+
     '''def test_04_order(self):
         # Create an item to order.
         items =  self.fa.items()
@@ -149,8 +150,8 @@ class FetchAppTest(unittest.TestCase):
             send_email=send_email,
             download_limit=download_limit,
             ignore_items=ignore_items)
-        self.assertTrue("id" in order) 
-        if config.DEBUG: 
+        self.assertTrue("id" in order)
+        if config.DEBUG:
             PP.pprint("FetchApp.order_create(...)")
             PP.pprint(order)
         # Update the order
@@ -174,14 +175,14 @@ class FetchAppTest(unittest.TestCase):
             send_email=new_send_email,
             download_limit=new_download_limit,
             ignore_items=new_ignore_items)
-        self.assertTrue("id" in new_order) 
-        if config.DEBUG: 
+        self.assertTrue("id" in new_order)
+        if config.DEBUG:
             PP.pprint("FetchApp.order_update(...)")
             PP.pprint(new_order)
         # Get order details
         order_details = self.fa.order_details(order["id"])
-        self.assertTrue("id" in order_details) 
-        if config.DEBUG: 
+        self.assertTrue("id" in order_details)
+        if config.DEBUG:
             PP.pprint("FetchApp.order_details(...)")
             PP.pprint(order_details)
         # Check updates
@@ -191,31 +192,30 @@ class FetchAppTest(unittest.TestCase):
         self.assertEqual(order_details["email"], new_email)
         # Send order email
         response = self.fa.order_send_email(order["id"])
-        self.assertTrue(response)        
+        self.assertTrue(response)
         # Expire the order
         response = self.fa.order_expire(order["id"])
         self.assertTrue(response)
         # Delete the order
         response = self.fa.order_delete(order["id"])
         self.assertTrue(response)'''
-        
+
     '''def test_05_uploads(self):
         uploads = self.fa.uploads()
         self.assertTrue(isinstance(uploads, list))
-        if config.DEBUG: 
+        if config.DEBUG:
             PP.pprint("FetchApp.uploads(...)")
             PP.pprint(uploads)'''
 
     '''def test_06_downloads(self):
         downloads = self.fa.downloads()
         self.assertTrue(isinstance(downloads, list))
-        if config.DEBUG: 
+        if config.DEBUG:
             PP.pprint("FetchApp.downloads(...)")
             PP.pprint(downloads)'''
 
     '''def test_07_new_token(self):
         token = self.fa.new_token()
-        if config.DEBUG: 
+        if config.DEBUG:
             PP.pprint("FetchApp.token(...)")
-            PP.pprint(token)'''  
-
+            PP.pprint(token)'''

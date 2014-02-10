@@ -85,8 +85,8 @@ class FetchApp(object):
         xmldoc = self._call(path, parameters=parameters)
         return self._deserialize(xmldoc)        
     
-    def items(self, per_page=None, page=None, sku=None):
-        """List your items"""
+    def products(self, per_page=None, page=None, sku=None):
+        """List your products"""
         
         path = "/api/items"
         if sku is not None:
@@ -99,22 +99,22 @@ class FetchApp(object):
         xmldoc = self._call(path, parameters=parameters)
         return self._deserialize(xmldoc)
 
-    def item_details(self, sku):
-        """List details of a specified item"""
+    def product_details(self, sku):
+        """List details of a specified product"""
         
         path = "/api/items/%s" % sku
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
     
-    def item_delete(self, sku):
-        """Delete a specified item"""
+    def product_delete(self, sku):
+        """Delete a specified product"""
         
         path = "/api/items/%s/delete" % sku
         xmldoc = self._call(path, method="delete")
         return self._deserialize(xmldoc) == "Ok."
     
-    def item_create(self, sku, name, price):
-        """Create a specified item"""
+    def product_create(self, sku, name, price):
+        """Create a specified product"""
         
         path = "/api/items/create"
         item = etree.Element("item")
@@ -128,7 +128,7 @@ class FetchApp(object):
             content_type="application/xml")
         return self._deserialize(xmldoc)
     
-    def item_update(self, sku, new_sku=None, name=None, price=None):
+    def product_update(self, sku, new_sku=None, name=None, price=None):
         """Update a specified item"""
         
         path = "/api/items/%s" % sku
@@ -146,15 +146,15 @@ class FetchApp(object):
             content_type="application/xml")
         return self._deserialize(xmldoc)        
     
-    def item_list_files(self, sku):
-        """List all the files for an item."""
+    def product_list_files(self, sku):
+        """List all the files for a product."""
         
         path = "/api/items/%s/files" % sku
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)       
 
-    def item_list_downloads(self, sku):
-        """List all the downloads for an item"""
+    def product_list_downloads(self, sku):
+        """List all the downloads for a product"""
         
         path = "/api/items/%s/downloads" % sku
         xmldoc = self._call(path)
@@ -374,6 +374,7 @@ class FetchApp(object):
         
     def _make_request(self, request):
         opener = urllib2.build_opener(urllib2.HTTPHandler)
+        import ipdb; ipdb.set_trace()
         try:
             response = opener.open(request)
         except urllib2.HTTPError, e:
