@@ -166,7 +166,7 @@ class FetchApp(object):
     def orders(self):
         """List all your orders"""
         
-        path = "/api/orders"
+        path = "/api/v2/orders"
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)       
     

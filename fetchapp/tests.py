@@ -64,7 +64,7 @@ class FetchAppTest(unittest.TestCase):
             PP.pprint("FetchApp.products(...)")
             PP.pprint(products)'''
 
-    def test_02_products(self):
+    '''def test_02_products(self):
         # Create
         sku = str(uuid4())
         name = str(uuid4())
@@ -117,14 +117,14 @@ class FetchAppTest(unittest.TestCase):
             PP.pprint("FetchApp.product_update(...)")
             PP.pprint(product_details)
         response = self.fa.product_delete(product["sku"])
-        self.assertTrue(response)
+        self.assertTrue(response)'''
 
-    '''def test_03_orders(self):
+    def test_03_orders(self):
         orders = self.fa.orders()
         self.assertTrue(isinstance(orders, list))
         if config.DEBUG:
             PP.pprint("FetchApp.orders(...)")
-            PP.pprint(orders)'''
+            PP.pprint(orders)
 
     '''def test_04_order(self):
         # Create an item to order.
