@@ -119,42 +119,45 @@ class FetchAppTest(unittest.TestCase):
         response = self.fa.product_delete(product["sku"])
         self.assertTrue(response)'''
 
-    def test_03_orders(self):
+    '''def test_03_orders(self):
         orders = self.fa.orders()
         self.assertTrue(isinstance(orders, list))
         if config.DEBUG:
             PP.pprint("FetchApp.orders(...)")
-            PP.pprint(orders)
+            PP.pprint(orders)'''
 
-    '''def test_04_order(self):
-        # Create an item to order.
-        items =  self.fa.items()
-        self.assertTrue(len(items) > 0)
-        for item in items:
-            if len(item["files"]) > 0:
+    def test_04_order(self):
+        # Create a product to order.
+        products =  self.fa.products()
+        self.assertTrue(len(products) > 0)
+        for product in products:
+            if product["files_count"] > 0:
                 break
-        # Order the item.
+        # Order the product.
         order_id = str(uuid4())
-        title = str(uuid4())
         first_name = str(uuid4())
         last_name = str(uuid4())
+        custom_fields = []
+        TEST_NUM_FIELDS = 2
+        for i in range(1, TEST_NUM_FIELDS+1):
+            custom_fields.append(i)
         email = config.TEST_EMAIL
-        skus = [item["sku"]]
+        skus = [product["sku"]]
         expiration_date = datetime.fromtimestamp(time.time() + 24 * 60 * 60)
         send_email = True
         download_limit = 5
-        ignore_items = True
+        ignore_products = True
         order = self.fa.order_create(
             order_id,
-            title,
             first_name,
             last_name,
             email,
+            custom_fields,
             skus,
             expiration_date=expiration_date,
             send_email=send_email,
             download_limit=download_limit,
-            ignore_items=ignore_items)
+            ignore_products=ignore_products)
         self.assertTrue("id" in order)
         if config.DEBUG:
             PP.pprint("FetchApp.order_create(...)")
@@ -164,22 +167,26 @@ class FetchAppTest(unittest.TestCase):
         new_first_name = str(uuid4())
         new_last_name = str(uuid4())
         new_email = config.TEST_EMAIL
-        new_skus = [item["sku"]]
+        new_custom_fields = []
+        TEST_NUM_FIELDS = 3
+        for i in range(1, TEST_NUM_FIELDS+1):
+            new_custom_fields.append(i+99)
+        new_skus = [product["sku"]]
         new_expiration_date = datetime.fromtimestamp(time.time() + 24 * 60 * 60)
         new_send_email = True
         new_download_limit = 5
-        new_ignore_items = True
+        new_ignore_products = True
         new_order = self.fa.order_update(
             order_id=order["id"],
-            title=new_title,
             first_name=new_first_name,
             last_name=new_last_name,
             email=new_email,
+            custom_fields=new_custom_fields,
             skus=new_skus,
             expiration_date=new_expiration_date,
             send_email=new_send_email,
             download_limit=new_download_limit,
-            ignore_items=new_ignore_items)
+            ignore_products=new_ignore_products)
         self.assertTrue("id" in new_order)
         if config.DEBUG:
             PP.pprint("FetchApp.order_update(...)")
@@ -191,7 +198,6 @@ class FetchAppTest(unittest.TestCase):
             PP.pprint("FetchApp.order_details(...)")
             PP.pprint(order_details)
         # Check updates
-        self.assertEqual(order_details["title"], new_title)
         self.assertEqual(order_details["first_name"], new_first_name)
         self.assertEqual(order_details["last_name"], new_last_name)
         self.assertEqual(order_details["email"], new_email)
@@ -203,7 +209,7 @@ class FetchAppTest(unittest.TestCase):
         self.assertTrue(response)
         # Delete the order
         response = self.fa.order_delete(order["id"])
-        self.assertTrue(response)'''
+        self.assertTrue(response)
 
     '''def test_05_uploads(self):
         uploads = self.fa.uploads()

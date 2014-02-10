@@ -173,62 +173,65 @@ class FetchApp(object):
     def order_details(self, order_id):
         """Details of a specified order"""
         
-        path = "/api/orders/%s" % order_id
+        path = "/api/v2/orders/%s" % order_id
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)        
     
     def order_delete(self, order_id):
         """Delete a specified order"""
         
-        path = "/api/orders/%s/delete" % order_id
+        path = "/api/v2/orders/%s/delete" % order_id
         xmldoc = self._call(path, method="delete")
         return self._deserialize(xmldoc) == "Ok."
 
     def order_expire(self, order_id):
         """Expire a specified order"""
         
-        path = "/api/orders/%s/expire" % order_id
+        path = "/api/v2/orders/%s/expire" % order_id
         xmldoc = self._call(path, method="post")
         return self._deserialize(xmldoc) == "Ok."
 
     def order_send_email(self, order_id):
         """Send download email of a specified order"""
         
-        path = "/api/orders/%s/send_email" % order_id
+        path = "/api/v2/orders/%s/send_email" % order_id
         xmldoc = self._call(path, method="post")
         return self._deserialize(xmldoc) == "Ok."
         
     def _order_xmldoc(self, 
             order_id=None, 
             new_order_id=None,
-            title=None,
             first_name=None,
             last_name=None,
             email=None,
+            custom_fields=None,
             skus=None,
             expiration_date=None,
             send_email=None,
             download_limit=None,
-            ignore_items=None):
+            ignore_products=None):
         """Create an order"""
 
         order = etree.Element("order")
         if order_id is not None:
             etree.SubElement(order, "id").text = unicode(order_id)
-        if title is not None:
-            etree.SubElement(order, "title").text = unicode(title)
         if first_name is not None:
             etree.SubElement(order, "first_name").text = unicode(first_name)
         if last_name is not None:
             etree.SubElement(order, "last_name").text = unicode(last_name)
         if email is not None:
             etree.SubElement(order, "email").text = unicode(email)
+        if custom_fields is not None:
+            num = 1
+            for field in custom_fields:
+                etree.SubElement(order, "custom_%s" % num).text = unicode(field)
+                num += 1
         if send_email is not None:
             send_email = int(send_email)
             etree.SubElement(order, "send_email").text = unicode(send_email)
-        if ignore_items is not None:
-            ignore_items = int(ignore_items)
-            etree.SubElement(order, "ignore_items").text = unicode(ignore_items)
+        if ignore_products is not None:
+            ignore_products = int(ignore_products)
+            etree.SubElement(order, "ignore_products").text = unicode(ignore_products)
         if expiration_date is not None:
             if not isinstance(expiration_date, datetime):
                 expiration_date = parse(expiration_date)
@@ -257,31 +260,31 @@ class FetchApp(object):
 
     def order_create(self, 
             order_id, 
-            title,
             first_name,
             last_name,
             email,
+            custom_fields,
             skus,
             expiration_date=None,
             send_email=None,
             download_limit=None,
-            ignore_items=None):
+            ignore_products=None):
         """Create an order"""
         
-        path = "/api/orders/create"
+        path = "/api/v2/orders/create"
         if not isinstance(skus, list):
             raise FetchAppOrderException("skus must be a list")
         order = self._order_xmldoc(
             order_id=order_id, 
-            title=title,
             first_name=first_name,
             last_name=last_name,
             email=email,
+            custom_fields=custom_fields,
             skus=skus,
             expiration_date=expiration_date,
             send_email=send_email,
             download_limit=download_limit,
-            ignore_items=ignore_items)
+            ignore_products=ignore_products)
         xmldoc = self._call(
             path, 
             data=etree.tostring(order, encoding="utf-8", xml_declaration=True),
@@ -291,28 +294,28 @@ class FetchApp(object):
         
     def order_update(self,
             order_id=None, 
-            title=None,
             first_name=None,
             last_name=None,
             email=None,
+            custom_fields=None,
             skus=None,
             expiration_date=None,
             send_email=None,
             download_limit=None,
-            ignore_items=None):
+            ignore_products=None):
         """Update a specified order"""
         
-        path = "/api/orders/%s/update" % (order_id)
+        path = "/api/v2/orders/%s/update" % (order_id)
         order = self._order_xmldoc(
-            title=title,
             first_name=first_name,
             last_name=last_name,
             email=email,
+            custom_fields=custom_fields,
             skus=skus,
             expiration_date=expiration_date,
             send_email=send_email,
             download_limit=download_limit,
-            ignore_items=ignore_items)
+            ignore_products=ignore_products)
         xmldoc = self._call(
             path, 
             data=etree.tostring(order, encoding="utf-8", xml_declaration=True),
