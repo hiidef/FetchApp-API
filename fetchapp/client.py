@@ -204,8 +204,11 @@ class FetchApp(object):
         xmldoc = self._call(path, method="post")
         return self._deserialize(xmldoc) == "Ok."
 
-    def order_list_items(self):
-        pass
+    def order_list_items(self, order_id):
+        """List all order item for a specific order"""
+        path = "/api/v2/orders/%s/order_items" % order_id
+        xmldoc = self._call(path)
+        return self._deserialize(xmldoc)
 
     def order_item_details(self):
         pass

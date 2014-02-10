@@ -64,7 +64,7 @@ class FetchAppTest(unittest.TestCase):
             PP.pprint("FetchApp.products(...)")
             PP.pprint(products)'''
 
-    def test_02_products(self):
+    '''def test_02_products(self):
         # Create
         sku = str(uuid4())
         name = str(uuid4())
@@ -119,7 +119,7 @@ class FetchAppTest(unittest.TestCase):
             PP.pprint(product_details)
             PP.pprint(product_stats)
         response = self.fa.product_delete(product["sku"])
-        self.assertTrue(response)
+        self.assertTrue(response)'''
 
     '''def test_03_orders(self):
         orders = self.fa.orders()
@@ -128,7 +128,7 @@ class FetchAppTest(unittest.TestCase):
             PP.pprint("FetchApp.orders(...)")
             PP.pprint(orders)'''
 
-    '''def test_04_order(self):
+    def test_04_order(self):
         # Create a product to order.
         products =  self.fa.products()
         self.assertTrue(len(products) > 0)
@@ -206,12 +206,17 @@ class FetchAppTest(unittest.TestCase):
         # Send order email
         response = self.fa.order_send_email(order["id"])
         self.assertTrue(response)
+        # List order items
+        items = self.fa.order_list_items(new_order["id"])
+        if config.DEBUG:
+            PP.pprint("FetchApp.order_list_items(...)")
+            PP.pprint(items)
         # Expire the order
         response = self.fa.order_expire(order["id"])
         self.assertTrue(response)
         # Delete the order
         response = self.fa.order_delete(order["id"])
-        self.assertTrue(response)'''
+        self.assertTrue(response)
 
     '''def test_05_files(self):
         files = self.fa.files()
