@@ -164,6 +164,10 @@ class FetchApp(object):
         return self._deserialize(xmldoc)
 
     def product_stats(self, sku):
+        """List statistics about a product"""
+        path = "/api/v2/products/%s/stats" % sku
+        xmldoc = self._call(path)
+        return self._deserialize(xmldoc)
     
     def orders(self):
         """List all your orders"""
@@ -201,16 +205,22 @@ class FetchApp(object):
         return self._deserialize(xmldoc) == "Ok."
 
     def order_list_items(self):
+        pass
 
     def order_item_details(self):
+        pass
 
     def order_item_downloads(self):
+        pass
 
-    def order_item_expire:(self)
+    def order_item_expire(self):
+        pass
 
     def order_downloads(self):
+        pass
 
     def order_stats(self):
+        pass
         
     def _order_xmldoc(self, 
             order_id=None, 

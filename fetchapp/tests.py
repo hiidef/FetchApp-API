@@ -109,6 +109,7 @@ class FetchAppTest(unittest.TestCase):
             price=new_price,
             description=new_description)
         product_details = self.fa.product_details(new_sku)
+        product_stats = self.fa.product_stats(new_sku)
         self.assertEqual(product_details["sku"], new_sku)
         self.assertEqual(product_details["name"], new_name)
         self.assertEqual(product_details["price"], float(new_price))
@@ -116,6 +117,7 @@ class FetchAppTest(unittest.TestCase):
         if config.DEBUG:
             PP.pprint("FetchApp.product_update(...)")
             PP.pprint(product_details)
+            PP.pprint(product_stats)
         response = self.fa.product_delete(product["sku"])
         self.assertTrue(response)
 
