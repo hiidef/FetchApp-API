@@ -57,62 +57,67 @@ class FetchAppTest(unittest.TestCase):
             PP.pprint("FetchApp.account(...)")
             PP.pprint(account_data)'''
 
-    def test_01_items(self):
+    '''def test_01_products(self):
         products =  self.fa.products()
         self.assertTrue(isinstance(products, list))
         if config.DEBUG:
             PP.pprint("FetchApp.products(...)")
-            PP.pprint(products)
+            PP.pprint(products)'''
 
-    '''def test_02_item(self):
+    def test_02_products(self):
         # Create
         sku = str(uuid4())
         name = str(uuid4())
         price = "%s.%s" % (random.randint(10,99),random.randint(10,99))
-        item = self.fa.item_create(
+        description = str(uuid4())
+        product = self.fa.product_create(
             sku,
             name,
-            price)
-        self.assertTrue("sku" in item)
+            price,
+            description)
+        self.assertTrue("sku" in product)
         if config.DEBUG:
-            PP.pprint("FetchApp.item_create(...)")
-            PP.pprint(item)
+            PP.pprint("FetchApp.product_create(...)")
+            PP.pprint(product)
         # List files
-        files = self.fa.item_list_files(item["sku"])
+        files = self.fa.product_list_files(product["sku"])
         self.assertTrue(isinstance(files, list))
         if config.DEBUG:
-            PP.pprint("FetchApp.item_list_files(...)")
+            PP.pprint("FetchApp.product_list_files(...)")
             PP.pprint(files)
         # List downloads
-        downloads = self.fa.item_list_downloads(item["sku"])
+        downloads = self.fa.product_list_downloads(product["sku"])
         self.assertTrue(isinstance(downloads, list))
         if config.DEBUG:
-            PP.pprint("FetchApp.item_list_downloads(...)")
+            PP.pprint("FetchApp.product_list_downloads(...)")
             PP.pprint(downloads)
         # Details
-        item_details = self.fa.item_details(item["sku"])
-        self.assertTrue("sku" in item_details)
+        product_details = self.fa.product_details(product["sku"])
+        self.assertTrue("sku" in product_details)
         if config.DEBUG:
-            PP.pprint("FetchApp.item_details(...)")
-            PP.pprint(item_details)
+            PP.pprint("FetchApp.product_details(...)")
+            PP.pprint(product_details)
         # Update
         new_sku = str(uuid4())
         new_name = str(uuid4())
         new_price = "%s.%s" % (random.randint(10,99),random.randint(10,99))
-        item = self.fa.item_update(
-            item_details["sku"],
+        new_description = str(uuid4())
+        product = self.fa.product_update(
+            product_details["sku"],
             new_sku=new_sku,
             name=new_name,
-            price=new_price)
-        item_details = self.fa.item_details(new_sku)
-        self.assertEqual(item_details["sku"], new_sku)
-        self.assertEqual(item_details["name"], new_name)
-        self.assertEqual(item_details["price"], float(new_price))
+            price=new_price,
+            description=new_description)
+        product_details = self.fa.product_details(new_sku)
+        self.assertEqual(product_details["sku"], new_sku)
+        self.assertEqual(product_details["name"], new_name)
+        self.assertEqual(product_details["price"], float(new_price))
+        self.assertEqual(product_details["description"], new_description)
         if config.DEBUG:
-            PP.pprint("FetchApp.item_update(...)")
-            PP.pprint(item_details)
-        response = self.fa.item_delete(item["sku"])
-        self.assertTrue(response)'''
+            PP.pprint("FetchApp.product_update(...)")
+            PP.pprint(product_details)
+        response = self.fa.product_delete(product["sku"])
+        self.assertTrue(response)
 
     '''def test_03_orders(self):
         orders = self.fa.orders()

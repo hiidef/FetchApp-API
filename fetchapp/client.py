@@ -102,46 +102,49 @@ class FetchApp(object):
     def product_details(self, sku):
         """List details of a specified product"""
         
-        path = "/api/items/%s" % sku
+        path = "/api/v2/products/%s" % sku
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
     
     def product_delete(self, sku):
         """Delete a specified product"""
         
-        path = "/api/items/%s/delete" % sku
+        path = "/api/v2/products/%s/delete" % sku
         xmldoc = self._call(path, method="delete")
         return self._deserialize(xmldoc) == "Ok."
     
-    def product_create(self, sku, name, price):
+    def product_create(self, sku, name, price, description=None):
         """Create a specified product"""
         
-        path = "/api/items/create"
-        item = etree.Element("item")
-        etree.SubElement(item, "sku").text = unicode(sku)
-        etree.SubElement(item, "name").text = unicode(name)
-        etree.SubElement(item, "price", attrib={"type":"float"}).text = unicode(price)
+        path = "/api/v2/products/create"
+        product = etree.Element("product")
+        etree.SubElement(product, "sku").text = unicode(sku)
+        etree.SubElement(product, "name").text = unicode(name)
+        etree.SubElement(product, "price", attrib={"type":"float"}).text = unicode(price)
+        etree.SubElement(product, "description").text = unicode(description)
         xmldoc = self._call(
             path, 
-            data=etree.tostring(item, encoding="utf-8", xml_declaration=True), 
+            data=etree.tostring(product, encoding="utf-8", xml_declaration=True), 
             method="post",
             content_type="application/xml")
         return self._deserialize(xmldoc)
     
-    def product_update(self, sku, new_sku=None, name=None, price=None):
+    def product_update(self, sku, new_sku=None, name=None, price=None, description=None):
         """Update a specified item"""
         
-        path = "/api/items/%s" % sku
-        item = etree.Element("item")
+        path = "/api/v2/products/%s" % sku
+        product = etree.Element("product")
         if new_sku is not None:
-            etree.SubElement(item, "sku").text = unicode(new_sku)
+            etree.SubElement(product, "sku").text = unicode(new_sku)
         if name is not None:
-            etree.SubElement(item, "name").text = unicode(name)
+            etree.SubElement(product, "name").text = unicode(name)
         if price is not None:
-            etree.SubElement(item, "price", attrib={"type":"float"}).text = unicode(price)
+            etree.SubElement(product, "price", attrib={"type":"float"}).text = unicode(price)
+        if description is not None:
+            etree.SubElement(product, "description").text = unicode(description)
         xmldoc = self._call(    
             path, 
-            data=etree.tostring(item, encoding="utf-8", xml_declaration=True), 
+            data=etree.tostring(product, encoding="utf-8", xml_declaration=True), 
             method="put",
             content_type="application/xml")
         return self._deserialize(xmldoc)        
@@ -149,14 +152,14 @@ class FetchApp(object):
     def product_list_files(self, sku):
         """List all the files for a product."""
         
-        path = "/api/items/%s/files" % sku
+        path = "/api/v2/products/%s/files" % sku
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)       
 
     def product_list_downloads(self, sku):
         """List all the downloads for a product"""
         
-        path = "/api/items/%s/downloads" % sku
+        path = "/api/v2/products/%s/downloads" % sku
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
     
