@@ -236,8 +236,11 @@ class FetchApp(object):
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
 
-    def order_item_downloads(self):
-        pass
+    def order_item_downloads(self, order_id, sku):
+        item = self.get_order_item(order_id, sku)
+        path = "/api/v2/orders/%s/order_items/%s/downloads" % (order_id, item["id"])
+        xmldoc = self._call(path)
+        return self._deserialize(xmldoc)
 
     def order_item_expire(self):
         pass
