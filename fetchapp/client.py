@@ -169,11 +169,15 @@ class FetchApp(object):
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
     
-    def orders(self):
+    def orders(self, per_page=None, page=None):
         """List all your orders"""
-        
         path = "/api/v2/orders"
-        xmldoc = self._call(path)
+        parameters = {}
+        if per_page is not None:
+            parameters["per_page"] = int(per_page)
+        if page is not None:
+            parameters["page"] = int(page)
+        xmldoc = self._call(path, parameters=parameters)
         return self._deserialize(xmldoc)       
     
     def order_details(self, order_id):
