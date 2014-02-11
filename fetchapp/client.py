@@ -85,7 +85,7 @@ class FetchApp(object):
         xmldoc = self._call(path, parameters=parameters)
         return self._deserialize(xmldoc)
     
-    def products(self, per_page=None, page=None, sku=None):
+    def items(self, per_page=None, page=None, sku=None):
         """List your products"""
         
         path = "/api/v2/products"
@@ -99,21 +99,21 @@ class FetchApp(object):
         xmldoc = self._call(path, parameters=parameters)
         return self._deserialize(xmldoc)
 
-    def product_details(self, sku):
+    def item_details(self, sku):
         """List details of a specified product"""
         
         path = "/api/v2/products/%s" % sku
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
     
-    def product_delete(self, sku):
+    def item_delete(self, sku):
         """Delete a specified product"""
         
         path = "/api/v2/products/%s/delete" % sku
         xmldoc = self._call(path, method="delete")
         return self._deserialize(xmldoc) == "Ok."
     
-    def product_create(self, sku, name, price, description=None):
+    def item_create(self, sku, name, price, description=None):
         """Create a specified product"""
         
         path = "/api/v2/products/create"
@@ -129,7 +129,7 @@ class FetchApp(object):
             content_type="application/xml")
         return self._deserialize(xmldoc)
     
-    def product_update(self, sku, new_sku=None, name=None, price=None, description=None):
+    def item_update(self, sku, new_sku=None, name=None, price=None, description=None):
         """Update a specified item"""
         
         path = "/api/v2/products/%s" % sku
@@ -149,21 +149,21 @@ class FetchApp(object):
             content_type="application/xml")
         return self._deserialize(xmldoc)        
     
-    def product_list_files(self, sku):
+    def item_list_files(self, sku):
         """List all the files for a product."""
         
         path = "/api/v2/products/%s/files" % sku
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)       
 
-    def product_list_downloads(self, sku):
+    def item_list_downloads(self, sku):
         """List all the downloads for a product"""
         
         path = "/api/v2/products/%s/downloads" % sku
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
 
-    def product_stats(self, sku):
+    def item_stats(self, sku):
         """List statistics about a product"""
         path = "/api/v2/products/%s/stats" % sku
         xmldoc = self._call(path)
