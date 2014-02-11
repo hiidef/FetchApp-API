@@ -210,14 +210,29 @@ class FetchApp(object):
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
 
-    def order_item_details(self, order_id, sku):
+    def get_order_item(self, order_id, sku):
         # order item has an id separate from that of the product ID
         # need to be able to access the order item IDs
+        return_val = None
         items = self.order_list_items(order_id)
         for item in items:
             if item["sku"] == sku:
+                return_val = item
                 break
+        if return_val == None:
+                raise FetchAppOrderException("sku %s not found in order %s" % (sku, order_id))
+        return return_val
+
+
+    def order_item_details(self, order_id, sku):
+        item = self.get_order_item(order_id, sku)
         path = "/api/v2/orders/%s/order_items/%s" % (order_id, item["id"])
+        xmldoc = self._call(path)
+        return self._deserialize(xmldoc)
+
+    def order_item_files(self, order_id, sku):
+        item = self.get_order_item(order_id, sku)
+        path = "/api/v2/orders/%s/order_items/%s/files" % (order_id, item["id"])
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
 

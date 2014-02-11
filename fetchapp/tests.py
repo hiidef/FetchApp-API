@@ -216,6 +216,12 @@ class FetchAppTest(unittest.TestCase):
             PP.pprint(items)
             PP.pprint("FetchApp.order_item_details(...)")
             PP.pprint(single_item)
+        # List order item files
+        files = self.fa.order_item_files(new_order["id"], new_skus[0])
+        #throw exception -> bad = self.fa.order_item_files(new_order["id"], None)
+        if config.DEBUG:
+            PP.pprint("FetchApp.order_item_files(...)")
+            PP.pprint(files)
         # Expire the order
         response = self.fa.order_expire(order["id"])
         self.assertTrue(response)
