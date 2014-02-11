@@ -208,6 +208,11 @@ class FetchAppTest(unittest.TestCase):
         # Send order email
         response = self.fa.order_send_email(order["id"])
         self.assertTrue(response)
+        # List order downloads
+        downloads = self.fa.order_downloads(order["id"])
+        if config.DEBUG:
+            PP.pprint("FetchApp.order_downloads(...)")
+            PP.pprint(downloads)
         # List order items
         items = self.fa.order_list_items(new_order["id"])
         single_item = self.fa.order_item_details(new_order["id"], new_skus[0])
@@ -226,6 +231,9 @@ class FetchAppTest(unittest.TestCase):
             PP.pprint(files)
             PP.pprint("FetchApp.order_item_downloads(...)")
             PP.pprint(downloads)
+        # Expire one item
+        #response = self.fa.order_item_expire(order["id"], new_skus[0])
+        #self.assertTrue(response)
         # Expire the order
         response = self.fa.order_expire(order["id"])
         self.assertTrue(response)

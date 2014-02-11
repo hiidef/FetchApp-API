@@ -204,52 +204,61 @@ class FetchApp(object):
         xmldoc = self._call(path, method="post")
         return self._deserialize(xmldoc) == "Ok."
 
+    def order_downloads(self, order_id):
+        """List downloads for a specified order"""
+        path = "/api/v2/orders/%s/downloads" % order_id
+        xmldoc = self._call(path)
+        return self._deserialize(xmldoc)  
+
+    def order_stats(self, order_id):
+        """Display stats for a specified order"""
+        pass
+
     def order_list_items(self, order_id):
         """List all order items for a specific order"""
         path = "/api/v2/orders/%s/order_items" % order_id
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
 
-    def get_order_item(self, order_id, sku):
+    def get_order_item_id(self, order_id, sku):
+        """Return a specific order's specific item's ID"""
         # order item has an id separate from that of the product ID
         # need to be able to access the order item IDs
         return_val = None
         items = self.order_list_items(order_id)
         for item in items:
             if item["sku"] == sku:
-                return_val = item
+                return_val = item["id"]
                 break
         if return_val == None:
                 raise FetchAppOrderException("sku %s not found in order %s" % (sku, order_id))
         return return_val
 
-
     def order_item_details(self, order_id, sku):
-        item = self.get_order_item(order_id, sku)
-        path = "/api/v2/orders/%s/order_items/%s" % (order_id, item["id"])
+        item_id = self.get_order_item_id(order_id, sku)
+        path = "/api/v2/orders/%s/order_items/%s" % (order_id, item_id)
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
 
     def order_item_files(self, order_id, sku):
-        item = self.get_order_item(order_id, sku)
-        path = "/api/v2/orders/%s/order_items/%s/files" % (order_id, item["id"])
+        item_id = self.get_order_item_id(order_id, sku)
+        path = "/api/v2/orders/%s/order_items/%s/files" % (order_id, item_id)
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
 
     def order_item_downloads(self, order_id, sku):
-        item = self.get_order_item(order_id, sku)
-        path = "/api/v2/orders/%s/order_items/%s/downloads" % (order_id, item["id"])
+        item_id = self.get_order_item_id(order_id, sku)
+        path = "/api/v2/orders/%s/order_items/%s/downloads" % (order_id, item_id)
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
 
-    def order_item_expire(self):
-        pass
-
-    def order_downloads(self):
-        pass
-
-    def order_stats(self):
-        pass
+    # FetchAppRequestException: Error expiring order item: undefined method `expire' for #<OrderItem:0x7fc4a5af43f0>, have to look into this...
+    # def order_item_expire(self, order_id, sku):
+    # """Expire a specified item from a specified order"""
+    #    item_id = self.get_order_item_id(order_id, sku)
+    #    path = "/api/v2/orders/%s/order_items/%s/expire" % (order_id, item_id)
+    #    xmldoc = self._call(path, method="post")
+    #    return self._deserialize(xmldoc) == "Ok."
         
     def _order_xmldoc(self, 
             order_id=None, 
