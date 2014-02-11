@@ -117,6 +117,7 @@ class FetchAppTest(unittest.TestCase):
         if config.DEBUG:
             PP.pprint("FetchApp.item_update(...)")
             PP.pprint(item_details)
+            PP.pprint("FetchApp.item_stats(...)")
             PP.pprint(item_stats)
         response = self.fa.item_delete(product["sku"])
         self.assertTrue(response)
@@ -151,18 +152,18 @@ class FetchAppTest(unittest.TestCase):
         expiration_date = datetime.fromtimestamp(time.time() + 24 * 60 * 60)
         send_email = True
         download_limit = 5
-        ignore_products = True
+        ignore_items = True
         order = self.fa.order_create(
             order_id,
             first_name,
             last_name,
             email,
-            custom_fields,
             skus,
+            custom_fields=custom_fields,
             expiration_date=expiration_date,
             send_email=send_email,
             download_limit=download_limit,
-            ignore_products=ignore_products)
+            ignore_items=ignore_items)
         self.assertTrue("id" in order)
         if config.DEBUG:
             PP.pprint("FetchApp.order_create(...)")
@@ -180,18 +181,18 @@ class FetchAppTest(unittest.TestCase):
         new_expiration_date = datetime.fromtimestamp(time.time() + 24 * 60 * 60)
         new_send_email = True
         new_download_limit = 5
-        new_ignore_products = True
+        new_ignore_items = True
         new_order = self.fa.order_update(
             order_id=order["id"],
             first_name=new_first_name,
             last_name=new_last_name,
             email=new_email,
-            custom_fields=new_custom_fields,
             skus=new_skus,
+            custom_fields=new_custom_fields,
             expiration_date=new_expiration_date,
             send_email=new_send_email,
             download_limit=new_download_limit,
-            ignore_products=new_ignore_products)
+            ignore_items=new_ignore_items)
         self.assertTrue("id" in new_order)
         if config.DEBUG:
             PP.pprint("FetchApp.order_update(...)")

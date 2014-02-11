@@ -169,6 +169,7 @@ class FetchApp(object):
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
     
+    #by default, only shows first 25 orders
     def orders(self, per_page=None, page=None):
         """List all your orders"""
         path = "/api/v2/orders"
@@ -221,13 +222,13 @@ class FetchApp(object):
         return self._deserialize(xmldoc) 
 
     def order_list_items(self, order_id):
-        """List all order items for a specific order"""
+        """List all order items for a specified order"""
         path = "/api/v2/orders/%s/order_items" % order_id
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
 
     def get_order_item_id(self, order_id, sku):
-        """Return a specific order's specific item's ID"""
+        """Return a specified order's specified item's ID"""
         # order item has an id separate from that of the product ID
         # need to be able to access the order item IDs
         return_val = None
@@ -241,18 +242,21 @@ class FetchApp(object):
         return return_val
 
     def order_item_details(self, order_id, sku):
+        """Display details of a specified order's specified item"""
         item_id = self.get_order_item_id(order_id, sku)
         path = "/api/v2/orders/%s/order_items/%s" % (order_id, item_id)
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
 
     def order_item_files(self, order_id, sku):
+        """Display the files of a specified order's specified item"""
         item_id = self.get_order_item_id(order_id, sku)
         path = "/api/v2/orders/%s/order_items/%s/files" % (order_id, item_id)
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
 
     def order_item_downloads(self, order_id, sku):
+        """Display the downloads of a specified order's specified item"""
         item_id = self.get_order_item_id(order_id, sku)
         path = "/api/v2/orders/%s/order_items/%s/downloads" % (order_id, item_id)
         xmldoc = self._call(path)
@@ -260,7 +264,7 @@ class FetchApp(object):
 
     # FetchAppRequestException: Error expiring order item: undefined method `expire' for #<OrderItem:0x7fc4a5af43f0>, have to look into this...
     # def order_item_expire(self, order_id, sku):
-    # """Expire a specified item from a specified order"""
+    #     """Expire a specified item from a specified order"""
     #    item_id = self.get_order_item_id(order_id, sku)
     #    path = "/api/v2/orders/%s/order_items/%s/expire" % (order_id, item_id)
     #    xmldoc = self._call(path, method="post")
@@ -272,12 +276,12 @@ class FetchApp(object):
             first_name=None,
             last_name=None,
             email=None,
-            custom_fields=None,
             skus=None,
+            custom_fields=None,
             expiration_date=None,
             send_email=None,
             download_limit=None,
-            ignore_products=None):
+            ignore_items=None):
         """Create an order"""
 
         order = etree.Element("order")
@@ -297,9 +301,9 @@ class FetchApp(object):
         if send_email is not None:
             send_email = int(send_email)
             etree.SubElement(order, "send_email").text = unicode(send_email)
-        if ignore_products is not None:
-            ignore_products = int(ignore_products)
-            etree.SubElement(order, "ignore_products").text = unicode(ignore_products)
+        if ignore_items is not None:
+            ignore_items = int(ignore_items)
+            etree.SubElement(order, "ignore_items").text = unicode(ignore_items)
         if expiration_date is not None:
             if not isinstance(expiration_date, datetime):
                 expiration_date = parse(expiration_date)
@@ -331,12 +335,12 @@ class FetchApp(object):
             first_name,
             last_name,
             email,
-            custom_fields,
             skus,
+            custom_fields=None,
             expiration_date=None,
             send_email=None,
             download_limit=None,
-            ignore_products=None):
+            ignore_items=None):
         """Create an order"""
         
         path = "/api/v2/orders/create"
@@ -352,7 +356,7 @@ class FetchApp(object):
             expiration_date=expiration_date,
             send_email=send_email,
             download_limit=download_limit,
-            ignore_products=ignore_products)
+            ignore_items=ignore_items)
         xmldoc = self._call(
             path, 
             data=etree.tostring(order, encoding="utf-8", xml_declaration=True),
@@ -365,12 +369,12 @@ class FetchApp(object):
             first_name=None,
             last_name=None,
             email=None,
-            custom_fields=None,
             skus=None,
+            custom_fields=None,
             expiration_date=None,
             send_email=None,
             download_limit=None,
-            ignore_products=None):
+            ignore_items=None):
         """Update a specified order"""
         
         path = "/api/v2/orders/%s/update" % (order_id)
@@ -383,7 +387,7 @@ class FetchApp(object):
             expiration_date=expiration_date,
             send_email=send_email,
             download_limit=download_limit,
-            ignore_products=ignore_products)
+            ignore_items=ignore_items)
         xmldoc = self._call(
             path, 
             data=etree.tostring(order, encoding="utf-8", xml_declaration=True),
