@@ -129,13 +129,16 @@ class FetchAppTest(unittest.TestCase):
             PP.pprint(orders)'''
 
     def test_04_order(self):
-        # Create a product to order.
+        # Create products to order.
         products =  self.fa.products()
         self.assertTrue(len(products) > 0)
+        skus = []
         for product in products:
             if product["files_count"] > 0:
-                break
-        # Order the product.
+                skus.append(product["sku"])
+                if len(skus) == 2:
+                    break
+        # Order the products.
         order_id = str(uuid4())
         first_name = str(uuid4())
         last_name = str(uuid4())
@@ -144,7 +147,6 @@ class FetchAppTest(unittest.TestCase):
         for i in range(1, TEST_NUM_FIELDS+1):
             custom_fields.append(str(uuid4()))
         email = config.TEST_EMAIL
-        skus = [product["sku"]]
         expiration_date = datetime.fromtimestamp(time.time() + 24 * 60 * 60)
         send_email = True
         download_limit = 5
@@ -173,7 +175,7 @@ class FetchAppTest(unittest.TestCase):
         TEST_NUM_FIELDS = 3
         for i in range(1, TEST_NUM_FIELDS+1):
             new_custom_fields.append(str(uuid4()))
-        new_skus = [product["sku"]]
+        new_skus = skus
         new_expiration_date = datetime.fromtimestamp(time.time() + 24 * 60 * 60)
         new_send_email = True
         new_download_limit = 5
@@ -208,9 +210,12 @@ class FetchAppTest(unittest.TestCase):
         self.assertTrue(response)
         # List order items
         items = self.fa.order_list_items(new_order["id"])
+        single_item = self.fa.order_item_details(new_order["id"], new_skus[0])
         if config.DEBUG:
             PP.pprint("FetchApp.order_list_items(...)")
             PP.pprint(items)
+            PP.pprint("FetchApp.order_item_details(...)")
+            PP.pprint(single_item)
         # Expire the order
         response = self.fa.order_expire(order["id"])
         self.assertTrue(response)

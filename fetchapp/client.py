@@ -205,13 +205,21 @@ class FetchApp(object):
         return self._deserialize(xmldoc) == "Ok."
 
     def order_list_items(self, order_id):
-        """List all order item for a specific order"""
+        """List all order items for a specific order"""
         path = "/api/v2/orders/%s/order_items" % order_id
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
 
-    def order_item_details(self):
-        pass
+    def order_item_details(self, order_id, sku):
+        # order item has an id separate from that of the product ID
+        # need to be able to access the order item IDs
+        items = self.order_list_items(order_id)
+        for item in items:
+            if item["sku"] == sku:
+                break
+        path = "/api/v2/orders/%s/order_items/%s" % (order_id, item["id"])
+        xmldoc = self._call(path)
+        return self._deserialize(xmldoc)
 
     def order_item_downloads(self):
         pass
