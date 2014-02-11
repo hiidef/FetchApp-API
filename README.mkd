@@ -1,11 +1,8 @@
 Unofficial FetchApp API Python Client
 =====================================
 
-This version is out of date
----------------------------
-
-Version 2 can be found under hotfix/update-v2
----------------------------------------------
+This version is out of date, version 2 can be found under hotfix/update-v2
+--------------------------------------------------------------------------
 
 Fetch is a digital delivery application that makes selling downloadable
 products simple. It seamlessly integrates with popular carts and payment
