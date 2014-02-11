@@ -1,0 +1,348 @@
+Unofficial FetchApp API Python Client
+=====================================
+
+Fetch is a digital delivery application that makes selling downloadable
+products simple. It seamlessly integrates with popular carts and payment
+systems like Shopify, FoxyCart, PayPal, Google Checkout, and more. Fetch
+is hosted software so there's nothing to install and works on any platform.
+
+Additional documentation is available at [fetchapp.com/pages/help-api](http://www.fetchapp.com/pages/help-api).
+
+Installation
+------------
+
+If easy_install is available, you can use:
+
+    easy_install https://github.com/wehriam/FetchApp-API/tarball/develop
+
+Tests
+-----
+
+To run unit tests, copy config.py.sample to config.py and modify with
+your account information.
+
+Basic Usage
+-----------
+
+**Instantiate FetchApp.**
+
+    fa = FetchApp(key, token)
+
+**Create a new account.** *url* is a URL slug, example: "example_url". 
+
+    fa.account_create(name, first_name, last_name, email, url)
+    
+	{   'api_key': '24771755c6d',
+	    'api_token': 'egheijahkal4',
+	    'billing_email': 'example_user@gmail.com',
+	    'download_limit_per_item': 3,
+	    'email': 'example_user@gmail.com',
+	    'id': '2357',
+	    'name': 'b0185600-532e-4305-8c8a-8abbadd03977',
+	    'order_expiration_in_hours': None,
+	    'url': '24771755c6d.fetchapp.com'}
+
+**Information about your account.**
+
+    fa.account()  
+    
+	{   'api_key': '24771755c6d',
+	    'api_token': 'egheijahkal4',
+	    'billing_email': 'example_user@gmail.com',
+	    'download_limit_per_item': 3,
+	    'email': 'example_user@gmail.com',
+	    'id': '2357',
+	    'name': 'b0185600-532e-4305-8c8a-8abbadd03977',
+	    'order_expiration_in_hours': None,
+	    'url': '24771755c6d.fetchapp.com'}
+	
+**Generate a new API token (this replaces your existing one).**
+ 	
+    fa.new_token()
+
+	'example_token'
+
+**List your downloads.**
+ 	
+    fa.downloads(per_page=None, page=None)
+
+	[   {   'filename': 'sample.txt',
+	        'id': '23570',
+			'item_sku': 'example_sku',
+	        'ip_address': '76.128.69.128',
+			'order_id': '1002',
+	        'size_bytes': 13.0,
+	        'downloaded_at': datetime.datetime(2011, 2, 8, 4, 19, 17, tzinfo=tzutc())}]
+
+**List your items.**
+ 	
+    fa.items(per_page=None, page=None, sku=None)
+    
+	[   {   'created_at': datetime.datetime(2011, 2, 8, 7, 56, 4, tzinfo=tzutc()),
+	        'download_count': 0,
+	        'downloads': [],
+	        'files': [],
+	        'guid': None,
+	        'id': 'bed718a9-2fcb-4cf5-85be-af9a7c19b902',
+	        'name': '5a28e179-addd-454d-b3c5-9d2653ebed57',
+	        'order_count': 0,
+	        'price': 57.5,
+	        'sku': 'bed718a9-2fcb-4cf5-85be-af9a7c19b902'},
+	    {   'content_type': 'binary/octet-stream',
+	        'created_at': datetime.datetime(2011, 2, 8, 6, 36, 30, tzinfo=tzutc()),
+	        'download_count': 0,
+	        'downloads': [],
+	        'filename': 'sample.txt',
+	        'files': [   {   'content_type': 'binary/octet-stream',
+	                         'filename': 'sample.txt',
+	                         'permalink': '/permalink/uvieth',
+	                         'permalink_full': 'http://example_user.fetchapp.com/permalink/uvieth',
+	                         'size_bytes': 13}],
+	        'guid': None,
+	        'id': 'test_1',
+	        'name': 'Test product',
+	        'order_count': 0,
+	        'permalink': '/permalink/uvieth',
+	        'permalink_full': 'http://example_user.fetchapp.com/permalink/uvieth',
+	        'price': 11.11,
+	        'size_bytes': 13,
+	        'sku': 'test_1'}]
+	
+**List details of a specified item.**
+ 	
+    fa.item_details(sku)
+    
+    {   'created_at': datetime.datetime(2011, 2, 8, 8, 0, 34, tzinfo=tzutc()),
+	    'download_count': 0,
+	    'downloads': [],
+	    'files': [],
+	    'guid': None,
+	    'id': 'b2882527-8314-4f4f-9de7-3eee6655d8e0',
+	    'name': '386fa0f3-7214-4097-9f71-1636e19ddefe',
+	    'order_count': 0,
+	    'price': 74.52,
+	    'sku': 'b2882527-8314-4f4f-9de7-3eee6655d8e0'}
+
+**Delete a specified item.**
+ 	
+    fa.item_delete(sku)
+	
+	True
+
+**Create a specified item.**
+ 	
+    fa.item_create(sku, name, price)
+    
+	{   'created_at': datetime.datetime(2011, 2, 8, 8, 0, 34, tzinfo=tzutc()),
+	    'download_count': 0,
+	    'downloads': [],
+	    'files': [],
+	    'guid': None,
+	    'id': 'b2882527-8314-4f4f-9de7-3eee6655d8e0',
+	    'name': '386fa0f3-7214-4097-9f71-1636e19ddefe',
+	    'order_count': 0,
+	    'price': 74.52,
+	    'sku': 'b2882527-8314-4f4f-9de7-3eee6655d8e0'}
+
+**Update a specified item.**
+ 	
+    fa.item_update(sku, new_sku=None, name=None, price=None)
+	
+	{   'created_at': datetime.datetime(2011, 2, 8, 8, 25, 38, tzinfo=tzutc()),
+	    'download_count': 0,
+	    'downloads': [],
+	    'files': [],
+	    'guid': None,
+	    'id': '090331ff-6e02-4ac9-b9e8-a5266c257e72',
+	    'name': 'd713021d-7fda-4737-b133-9d31cb7e1846',
+	    'order_count': 0,
+	    'price': 34.73,
+	    'sku': '090331ff-6e02-4ac9-b9e8-a5266c257e72'}
+
+**List all the files for an item.**
+ 	
+    fa.item_list_files(sku)
+
+	[   {   'filename': 'sample.txt',
+			'size_bytes': 13.0,
+			'content_type': 'binary/octet-stream',
+			'permalink': '/permalink/werwa',
+			'permalink_full': 'http://pixellent.fetchapp.com/permalink/werwa'}]
+
+**List all the downloads for an item.**
+ 	
+    fa.item_list_downloads(sku)
+
+	[   {   'filename': 'sample.txt',
+	        'id': '23570',
+			'item_sku': 'example_sku',
+	        'ip_address': '76.128.69.128',
+			'order_id': '1002',
+	        'size_bytes': 13.0,
+	        'downloaded_at': datetime.datetime(2011, 2, 8, 4, 19, 17, tzinfo=tzutc())}]
+
+**List all your orders.**
+ 	
+    fa.orders()
+    
+	[   {   'created_at': datetime.datetime(2011, 2, 8, 7, 3, 3, tzinfo=tzutc()),
+	        'download_count': 0,
+	        'download_limit': 5,
+	        'email': 'example_user@gmail.com',
+	        'expiration_date': datetime.datetime(2011, 2, 9, 2, 3, 4, tzinfo=tzutc()),
+	        'first_name': 'ab663f29-2548-40a1-ae60-3645ac59551d',
+	        'id': 'f03e1991-890c-445b-bf13-4b036d18a8fd',
+	        'item_count': 1,
+	        'last_name': '09017348-6160-43b8-bc1a-438ac37e6465',
+	        'name': 'ab663f29-2548-40a1-ae60-3645ac59551d 09017348-6160-43b8-bc1a-438ac37e6465',
+	        'order_items': {   'order_item': {   'created_at': datetime.datetime(2011, 2, 8, 7, 3, 4, tzinfo=tzutc()),
+	                                             'download_count': 0,
+	                                             'downloads': [],
+	                                             'downloads_remaining': 5,
+	                                             'files': [   {   'download_count': 0,
+	                                                              'downloads': [   ],
+	                                                              'downloads_remaining': 5,
+	                                                              'filename': 'sample.txt',
+	                                                              'guid': 'ohjuxi',
+	                                                              'link': '/files/ohjuxi',
+	                                                              'link_full': 'http://example_user.fetchapp.com/files/ohjuxi'}],
+	                                             'guid': 'ohjuxi',
+	                                             'item_name': 'Test product',
+	                                             'link': '/files/ohjuxi',
+	                                             'link_full': 'http://example_user.fetchapp.com/files/ohjuxi',
+	                                             'order_id': 'f03e1991-890c-445b-bf13-4b036d18a8fd',
+	                                             'price': 11.11,
+	                                             'sku': 'test_1'}},
+	        'title': '2c1a9e18-604d-4b67-b837-dbcc690df72d',
+	        'total': 11.11}]
+
+**Details of a specified order.**
+ 	
+    fa.order_details(order_id)
+	
+	{   'created_at': datetime.datetime(2011, 2, 8, 8, 0, 39, tzinfo=tzutc()),
+	    'download_count': 0,
+	    'download_limit': 5,
+	    'email': 'example_user@gmail.com',
+	    'expiration_date': datetime.datetime(2011, 2, 9, 3, 0, 39, tzinfo=tzutc()),
+	    'first_name': 'cb56dfb3-6d3e-487d-a384-97ac15909d70',
+	    'id': 'd1c606f0-2e62-4f8a-9a96-681ed70b1a9c',
+	    'item_count': 1,
+	    'last_name': '4b6beff0-e57c-4505-b803-929068dab043',
+	    'name': 'cb56dfb3-6d3e-487d-a384-97ac15909d70 4b6beff0-e57c-4505-b803-929068dab043',
+	    'order_items': {   'order_item': {   'created_at': datetime.datetime(2011, 2, 8, 8, 0, 40, tzinfo=tzutc()),
+	                                         'download_count': 0,
+	                                         'downloads': [],
+	                                         'downloads_remaining': 5,
+	                                         'files': [   {   'download_count': 0,
+	                                                          'downloads': [],
+	                                                          'downloads_remaining': 5,
+	                                                          'filename': 'sample.txt',
+	                                                          'guid': 'racawa',
+	                                                          'link': '/files/racawa',
+	                                                          'link_full': 'http://example_user.fetchapp.com/files/racawa'}],
+	                                         'guid': 'racawa',
+	                                         'item_name': 'Test product',
+	                                         'link': '/files/racawa',
+	                                         'link_full': 'http://example_user.fetchapp.com/files/racawa',
+	                                         'order_id': 'd1c606f0-2e62-4f8a-9a96-681ed70b1a9c',
+	                                         'price': 11.11,
+	                                         'sku': 'test_1'}},
+	    'title': '91a1f65b-828c-45ec-92a9-042d49f04397',
+	    'total': 11.11}
+	
+**Delete a specified order.**
+ 	
+    fa.order_delete(order_id)
+    
+	True
+	
+**Expire a specified order.**
+ 	
+    fa.order_expire(order_id)
+	
+	True
+
+**Send download email of a specified order.**
+ 	
+    fa.order_send_email(order_id)
+
+	True
+
+**Create an order.** *skus* should be a list of SKUs to update. 
+*expiration_date* can be a string or a datetime. *send_email* should be
+a boolean.
+
+    fa.order_create(order_id, title, first_name, last_name, email, skus, expiration_date=None, send_email=None, download_limit=None, ignore_items=None)
+
+	{   'created_at': datetime.datetime(2011, 2, 8, 8, 0, 39, tzinfo=tzutc()),
+	    'download_count': 0,
+	    'download_limit': 5,
+	    'email': 'example_user@gmail.com',
+	    'expiration_date': datetime.datetime(2011, 2, 9, 3, 0, 39, tzinfo=tzutc()),
+	    'first_name': 'd683f6bf-fe2d-499a-91c5-3ec3d93fd28e',
+	    'id': 'd1c606f0-2e62-4f8a-9a96-681ed70b1a9c',
+	    'item_count': 0,
+	    'last_name': '731f1d84-fbc0-4899-8862-8b747f839261',
+	    'name': 'd683f6bf-fe2d-499a-91c5-3ec3d93fd28e 731f1d84-fbc0-4899-8862-8b747f839261',
+	    'order_items': '\n  ',
+	    'title': 'b6b92078-8152-4d6d-91ed-5bc288454e4f',
+	    'total': 0.0}
+	
+**Update a specified order.** *skus* should be a list of SKUs to update. 
+*expiration_date* can be a string or a datetime. *send_email* should be
+a boolean.
+
+    fa.order_update(
+		order_id=None, 
+		title=None, 
+		first_name=None, 
+		last_name=None, 
+		email=None, 
+		skus=None, 
+		expiration_date=None, 
+		send_email=None, 
+		download_limit=None, 
+		ignore_items=None)
+    
+    {   'created_at': datetime.datetime(2011, 2, 8, 8, 0, 39, tzinfo=tzutc()),
+	    'download_count': 0,
+	    'download_limit': 5,
+	    'email': 'example_user@gmail.com',
+	    'expiration_date': datetime.datetime(2011, 2, 9, 3, 0, 39, tzinfo=tzutc()),
+	    'first_name': 'cb56dfb3-6d3e-487d-a384-97ac15909d70',
+	    'id': 'd1c606f0-2e62-4f8a-9a96-681ed70b1a9c',
+	    'item_count': 1,
+	    'last_name': '4b6beff0-e57c-4505-b803-929068dab043',
+	    'name': 'cb56dfb3-6d3e-487d-a384-97ac15909d70 4b6beff0-e57c-4505-b803-929068dab043',
+	    'order_items': {   'order_item': {   'created_at': datetime.datetime(2011, 2, 8, 8, 0, 40, tzinfo=tzutc()),
+	                                         'download_count': 0,
+	                                         'downloads': [],
+	                                         'downloads_remaining': 5,
+	                                         'files': [   {   'download_count': 0,
+	                                                          'downloads': [],
+	                                                          'downloads_remaining': 5,
+	                                                          'filename': 'sample.txt',
+	                                                          'guid': 'racawa',
+	                                                          'link': '/files/racawa',
+	                                                          'link_full': 'http://example_user.fetchapp.com/files/racawa'}],
+	                                         'guid': 'racawa',
+	                                         'item_name': 'Test product',
+	                                         'link': '/files/racawa',
+	                                         'link_full': 'http://example_user.fetchapp.com/files/racawa',
+	                                         'order_id': 'd1c606f0-2e62-4f8a-9a96-681ed70b1a9c',
+	                                         'price': 11.11,
+	                                         'sku': 'test_1'}},
+	    'title': '91a1f65b-828c-45ec-92a9-042d49f04397',
+	    'total': 11.11}
+	
+**List your uploads.**
+ 	
+    fa.uploads(per_page=None, page=None)
+    
+	[   {   'filename': 'sample.txt',
+	        'id': '23570',
+	        'ip_address': '76.97.69.77',
+	        'size_bytes': 13.0,
+	        'uploaded_at': datetime.datetime(2011, 2, 8, 4, 19, 17, tzinfo=tzutc())}]
+	
