@@ -210,9 +210,13 @@ class FetchAppTest(unittest.TestCase):
         self.assertTrue(response)
         # List order downloads
         downloads = self.fa.order_downloads(order["id"])
+        # List order stats
+        stats = self.fa.order_stats(order["id"])
         if config.DEBUG:
             PP.pprint("FetchApp.order_downloads(...)")
             PP.pprint(downloads)
+            PP.pprint("FetchApp.order_stats(...)")
+            PP.pprint(stats)
         # List order items
         items = self.fa.order_list_items(new_order["id"])
         single_item = self.fa.order_item_details(new_order["id"], new_skus[0])

@@ -212,7 +212,9 @@ class FetchApp(object):
 
     def order_stats(self, order_id):
         """Display stats for a specified order"""
-        pass
+        path = "/api/v2/orders/%s/stats" % order_id
+        xmldoc = self._call(path)
+        return self._deserialize(xmldoc) 
 
     def order_list_items(self, order_id):
         """List all order items for a specific order"""
