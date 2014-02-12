@@ -1,17 +1,12 @@
 Unofficial FetchApp API Python Client
 =====================================
 
-This version is out of date, version 2 can be found under hotfix/updates-v2
---------------------------------------------------------------------------
-
 Fetch is a digital delivery application that makes selling downloadable
 products simple. It seamlessly integrates with popular carts and payment
 systems like Shopify, FoxyCart, PayPal, Google Checkout, and more. Fetch
 is hosted software so there's nothing to install and works on any platform.
 
-With the upgrade to v2.0, documentation is available at [fetchapp.com/pages/help-api2](http://www.fetchapp.com/pages/help-api2).
-
-The old v1 documentation is available at [fetchapp.com/pages/help-api](http://www.fetchapp.com/pages/help-api).
+With the upgrade to v2.0, documentation is available at [fetchapp.com/api](http://www.fetchapp.com/api).
 
 Installation
 ------------
