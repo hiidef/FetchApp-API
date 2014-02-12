@@ -6,7 +6,7 @@ products simple. It seamlessly integrates with popular carts and payment
 systems like Shopify, FoxyCart, PayPal, Google Checkout, and more. Fetch
 is hosted software so there's nothing to install and works on any platform.
 
-With the upgrade to v2.0, documentation is available at [fetchapp.com/api](http://www.fetchapp.com/api).
+Additional documentation is available at [fetchapp.com/api](http://www.fetchapp.com/api).
 
 Installation
 ------------
