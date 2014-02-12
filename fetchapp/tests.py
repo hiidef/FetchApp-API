@@ -23,15 +23,16 @@ See: See http://YOUR_STORE_NAME.fetchapp.com/admin/settings/payments
 
 PP = pprint.PrettyPrinter(indent=4)
 
+
 class FetchAppTest(unittest.TestCase):
-    
+
     def setUp(self):
         self.fa = FetchApp(config.FETCHAPP_KEY, config.FETCHAPP_TOKEN)
         pass
 
     def tearDown(self):
         pass
-    
+
     def test_00_account(self):
         name = str(uuid4())
         first_name = str(uuid4())
@@ -46,111 +47,125 @@ class FetchAppTest(unittest.TestCase):
             url
         )
         self.assertTrue("api_key" in account)
-        if config.DEBUG: 
+        if config.DEBUG:
             PP.pprint("FetchApp.account_create(...)")
             PP.pprint(account)
         fa = FetchApp(account["api_key"], account["api_token"])
         account_data = fa.account()
         self.assertTrue("email" in account_data)
-        if config.DEBUG: 
+        if config.DEBUG:
             PP.pprint("FetchApp.account(...)")
             PP.pprint(account_data)
-            
-    def test_01_items(self):
-        items =  self.fa.items()
-        self.assertTrue(isinstance(items, list))
-        if config.DEBUG: 
-            PP.pprint("FetchApp.items(...)")
-            PP.pprint(items)
-            
-    def test_02_item(self):
+
+    def test_01_products(self):
+        products =  self.fa.items()
+        self.assertTrue(isinstance(products, list))
+        if config.DEBUG:
+            PP.pprint("FetchApp.products(...)")
+            PP.pprint(products)
+
+    def test_02_products(self):
         # Create
         sku = str(uuid4())
         name = str(uuid4())
         price = "%s.%s" % (random.randint(10,99),random.randint(10,99))
-        item = self.fa.item_create(
+        description = str(uuid4())
+        product = self.fa.item_create(
             sku,
             name,
-            price)
-        self.assertTrue("sku" in item)
-        if config.DEBUG: 
+            price,
+            description)
+        self.assertTrue("sku" in product)
+        if config.DEBUG:
             PP.pprint("FetchApp.item_create(...)")
-            PP.pprint(item)
+            PP.pprint(product)
         # List files
-        files = self.fa.item_list_files(item["sku"])
+        files = self.fa.item_list_files(product["sku"])
         self.assertTrue(isinstance(files, list))
-        if config.DEBUG: 
+        if config.DEBUG:
             PP.pprint("FetchApp.item_list_files(...)")
             PP.pprint(files)
         # List downloads
-        downloads = self.fa.item_list_downloads(item["sku"])
+        downloads = self.fa.item_list_downloads(product["sku"])
         self.assertTrue(isinstance(downloads, list))
-        if config.DEBUG: 
+        if config.DEBUG:
             PP.pprint("FetchApp.item_list_downloads(...)")
             PP.pprint(downloads)
         # Details
-        item_details = self.fa.item_details(item["sku"])
+        item_details = self.fa.item_details(product["sku"])
         self.assertTrue("sku" in item_details)
-        if config.DEBUG: 
+        if config.DEBUG:
             PP.pprint("FetchApp.item_details(...)")
             PP.pprint(item_details)
         # Update
         new_sku = str(uuid4())
         new_name = str(uuid4())
         new_price = "%s.%s" % (random.randint(10,99),random.randint(10,99))
-        item = self.fa.item_update(
+        new_description = str(uuid4())
+        product = self.fa.item_update(
             item_details["sku"],
             new_sku=new_sku,
             name=new_name,
-            price=new_price)
+            price=new_price,
+            description=new_description)
         item_details = self.fa.item_details(new_sku)
+        item_stats = self.fa.item_stats(new_sku)
         self.assertEqual(item_details["sku"], new_sku)
         self.assertEqual(item_details["name"], new_name)
         self.assertEqual(item_details["price"], float(new_price))
-        if config.DEBUG: 
+        self.assertEqual(item_details["description"], new_description)
+        if config.DEBUG:
             PP.pprint("FetchApp.item_update(...)")
             PP.pprint(item_details)
-        response = self.fa.item_delete(item["sku"])
+            PP.pprint("FetchApp.item_stats(...)")
+            PP.pprint(item_stats)
+        response = self.fa.item_delete(product["sku"])
         self.assertTrue(response)
 
     def test_03_orders(self):
         orders = self.fa.orders()
-        self.assertTrue(isinstance(orders, list))         
-        if config.DEBUG: 
+        self.assertTrue(isinstance(orders, list))
+        if config.DEBUG:
             PP.pprint("FetchApp.orders(...)")
             PP.pprint(orders)
-                   
+            PP.pprint(len(orders))
+
     def test_04_order(self):
-        # Create an item to order.
-        items =  self.fa.items()
-        self.assertTrue(len(items) > 0)
-        for item in items:
-            if len(item["files"]) > 0:
-                break
-        # Order the item.
+        # Create products to order.
+        products =  self.fa.items()
+        self.assertTrue(len(products) > 0)
+        skus = []
+        for product in products:
+            if product["files_count"] > 0:
+                skus.append(product["sku"])
+                if len(skus) == 2:
+                    break
+        # Order the products.
         order_id = str(uuid4())
-        title = str(uuid4())
         first_name = str(uuid4())
         last_name = str(uuid4())
+        custom_fields = []
+        TEST_NUM_FIELDS = 2
+        for i in range(1, TEST_NUM_FIELDS+1):
+            custom_fields.append(str(uuid4()))
         email = config.TEST_EMAIL
-        skus = [item["sku"]]
         expiration_date = datetime.fromtimestamp(time.time() + 24 * 60 * 60)
         send_email = True
         download_limit = 5
         ignore_items = True
         order = self.fa.order_create(
             order_id,
-            title,
             first_name,
             last_name,
             email,
             skus,
+            custom_fields=custom_fields,
             expiration_date=expiration_date,
             send_email=send_email,
             download_limit=download_limit,
             ignore_items=ignore_items)
-        self.assertTrue("id" in order) 
-        if config.DEBUG: 
+        self.assertTrue("id" in order)
+        if config.DEBUG:
             PP.pprint("FetchApp.order_create(...)")
             PP.pprint(order)
         # Update the order
@@ -158,64 +173,96 @@ class FetchAppTest(unittest.TestCase):
         new_first_name = str(uuid4())
         new_last_name = str(uuid4())
         new_email = config.TEST_EMAIL
-        new_skus = [item["sku"]]
+        new_custom_fields = []
+        TEST_NUM_FIELDS = 3
+        for i in range(1, TEST_NUM_FIELDS+1):
+            new_custom_fields.append(str(uuid4()))
+        new_skus = skus
         new_expiration_date = datetime.fromtimestamp(time.time() + 24 * 60 * 60)
         new_send_email = True
         new_download_limit = 5
         new_ignore_items = True
         new_order = self.fa.order_update(
             order_id=order["id"],
-            title=new_title,
             first_name=new_first_name,
             last_name=new_last_name,
             email=new_email,
             skus=new_skus,
+            custom_fields=new_custom_fields,
             expiration_date=new_expiration_date,
             send_email=new_send_email,
             download_limit=new_download_limit,
             ignore_items=new_ignore_items)
-        self.assertTrue("id" in new_order) 
-        if config.DEBUG: 
+        self.assertTrue("id" in new_order)
+        if config.DEBUG:
             PP.pprint("FetchApp.order_update(...)")
             PP.pprint(new_order)
         # Get order details
         order_details = self.fa.order_details(order["id"])
-        self.assertTrue("id" in order_details) 
-        if config.DEBUG: 
+        self.assertTrue("id" in order_details)
+        if config.DEBUG:
             PP.pprint("FetchApp.order_details(...)")
             PP.pprint(order_details)
         # Check updates
-        self.assertEqual(order_details["title"], new_title)
         self.assertEqual(order_details["first_name"], new_first_name)
         self.assertEqual(order_details["last_name"], new_last_name)
         self.assertEqual(order_details["email"], new_email)
         # Send order email
         response = self.fa.order_send_email(order["id"])
-        self.assertTrue(response)        
+        self.assertTrue(response)
+        # List order downloads
+        downloads = self.fa.order_downloads(order["id"])
+        # List order stats
+        stats = self.fa.order_stats(order["id"])
+        if config.DEBUG:
+            PP.pprint("FetchApp.order_downloads(...)")
+            PP.pprint(downloads)
+            PP.pprint("FetchApp.order_stats(...)")
+            PP.pprint(stats)
+        # List order items
+        items = self.fa.order_list_items(new_order["id"])
+        single_item = self.fa.order_item_details(new_order["id"], new_skus[0])
+        if config.DEBUG:
+            PP.pprint("FetchApp.order_list_items(...)")
+            PP.pprint(items)
+            PP.pprint("FetchApp.order_item_details(...)")
+            PP.pprint(single_item)
+        # List order item files
+        #throw exception -> bad = self.fa.order_item_files(new_order["id"], None)
+        files = self.fa.order_item_files(new_order["id"], new_skus[0])
+        # List order item downloads
+        downloads = self.fa.order_item_downloads(new_order["id"], new_skus[0])
+        if config.DEBUG:
+            PP.pprint("FetchApp.order_item_files(...)")
+            PP.pprint(files)
+            PP.pprint("FetchApp.order_item_downloads(...)")
+            PP.pprint(downloads)
+        # Expire one item
+        #response = self.fa.order_item_expire(order["id"], new_skus[0])
+        #self.assertTrue(response)
         # Expire the order
         response = self.fa.order_expire(order["id"])
         self.assertTrue(response)
         # Delete the order
-        response = self.fa.order_delete(order["id"])
+        #response = self.fa.order_delete(order["id"])
         self.assertTrue(response)
-        
-    def test_05_uploads(self):
-        uploads = self.fa.uploads()
-        self.assertTrue(isinstance(uploads, list))
-        if config.DEBUG: 
-            PP.pprint("FetchApp.uploads(...)")
-            PP.pprint(uploads)
+
+    def test_05_files(self):
+        files = self.fa.files()
+        self.assertTrue(isinstance(files, list))
+        if config.DEBUG:
+            PP.pprint("FetchApp.files(...)")
+            PP.pprint(files)
 
     def test_06_downloads(self):
         downloads = self.fa.downloads()
         self.assertTrue(isinstance(downloads, list))
-        if config.DEBUG: 
+        if config.DEBUG:
             PP.pprint("FetchApp.downloads(...)")
             PP.pprint(downloads)
 
-    def test_07_new_token(self):
+    '''def test_07_new_token(self):
         token = self.fa.new_token()
-        if config.DEBUG: 
+        if config.DEBUG:
             PP.pprint("FetchApp.token(...)")
-            PP.pprint(token)    
-
+            PP.pprint(token)'''

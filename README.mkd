@@ -9,14 +9,16 @@ products simple. It seamlessly integrates with popular carts and payment
 systems like Shopify, FoxyCart, PayPal, Google Checkout, and more. Fetch
 is hosted software so there's nothing to install and works on any platform.
 
-Additional documentation is available at [fetchapp.com/pages/help-api](http://www.fetchapp.com/pages/help-api).
+With the upgrade to v2.0, documentation is available at [fetchapp.com/pages/help-api2](http://www.fetchapp.com/pages/help-api2).
+
+The old v1 documentation is available at [fetchapp.com/pages/help-api](http://www.fetchapp.com/pages/help-api).
 
 Installation
 ------------
-
 If easy_install is available, you can use:
 
-    easy_install https://github.com/wehriam/FetchApp-API/tarball/develop
+    easy_install https://github.com/hiidef/FetchApp-API/tarball/hotfix/updates-v2
+
 
 Tests
 -----
@@ -49,15 +51,17 @@ Basic Usage
 
     fa.account()  
     
-	{   'api_key': '24771755c6d',
-	    'api_token': 'egheijahkal4',
-	    'billing_email': 'example_user@gmail.com',
+	{   'api_key': '398dd38d04d',
+	    'api_token': 'na4yuwaekeey',
+	    'billing_email': 'example@gmail.com',
+	    'created_at': datetime.datetime(2014, 2, 11, 18, 48, 12, tzinfo=tzutc()),
+	    'currency': 'USD',
 	    'download_limit_per_item': 3,
-	    'email': 'example_user@gmail.com',
-	    'id': '2357',
-	    'name': 'b0185600-532e-4305-8c8a-8abbadd03977',
+	    'email': 'example@gmail.com',
+	    'id': 103176,
+	    'name': '61b22110-c223-41eb-a1d0-1a163682ea18',
 	    'order_expiration_in_hours': None,
-	    'url': '24771755c6d.fetchapp.com'}
+	    'url': '398dd38d04d.fetchapp.com'}
 	
 **Generate a new API token (this replaces your existing one).**
  	
@@ -69,100 +73,122 @@ Basic Usage
  	
     fa.downloads(per_page=None, page=None)
 
-	[   {   'filename': 'sample.txt',
-	        'id': '23570',
-			'item_sku': 'example_sku',
-	        'ip_address': '76.128.69.128',
-			'order_id': '1002',
-	        'size_bytes': 13.0,
-	        'downloaded_at': datetime.datetime(2011, 2, 8, 4, 19, 17, tzinfo=tzutc())}]
+	[   {   'downloaded_at': datetime.datetime(2014, 2, 7, 21, 56, 53, tzinfo=tzutc()),
+        'filename': 'me.jpg',
+        'id': 10890012,
+        'ip_address': '72.133.39.230',
+        'order_id': None,
+        'order_item_id': None,
+        'product_sku': None,
+        'size_bytes': 182808}]
 
-**List your items.**
+**List your products.**
  	
     fa.items(per_page=None, page=None, sku=None)
     
-	[   {   'created_at': datetime.datetime(2011, 2, 8, 7, 56, 4, tzinfo=tzutc()),
+	[   {   'created_at': datetime.datetime(2014, 1, 28, 20, 13, 40, tzinfo=tzutc()),
+	        'description': 'test',
 	        'download_count': 0,
-	        'downloads': [],
-	        'files': [],
-	        'guid': None,
-	        'id': 'bed718a9-2fcb-4cf5-85be-af9a7c19b902',
-	        'name': '5a28e179-addd-454d-b3c5-9d2653ebed57',
-	        'order_count': 0,
-	        'price': 57.5,
-	        'sku': 'bed718a9-2fcb-4cf5-85be-af9a7c19b902'},
-	    {   'content_type': 'binary/octet-stream',
-	        'created_at': datetime.datetime(2011, 2, 8, 6, 36, 30, tzinfo=tzutc()),
+	        'downloads_uri': 'https://accountname.fetchapp.com/api/v2/products/test/downloads',
+	        'files_count': 1,
+	        'files_uri': 'https://accountname.fetchapp.com/api/v2/products/test/files',
+	        'id': 'test',
+	        'image_url': None,
+	        'name': 'test',
+	        'order_count': 28,
+	        'paypal_add_to_cart_link': '/sell/ohgofood/ppc',
+	        'paypal_buy_now_link': '/sell/ohgofood',
+	        'paypal_view_cart_link': '/cart/pp',
+	        'price': 1.0,
+	        'sku': 'test',
+	        'store_url': 'test-site.com'},
+	    {   'created_at': datetime.datetime(2014, 2, 11, 16, 15, 47, tzinfo=tzutc()),
+	        'description': 'test product',
 	        'download_count': 0,
-	        'downloads': [],
-	        'filename': 'sample.txt',
-	        'files': [   {   'content_type': 'binary/octet-stream',
-	                         'filename': 'sample.txt',
-	                         'permalink': '/permalink/uvieth',
-	                         'permalink_full': 'http://example_user.fetchapp.com/permalink/uvieth',
-	                         'size_bytes': 13}],
-	        'guid': None,
-	        'id': 'test_1',
-	        'name': 'Test product',
-	        'order_count': 0,
-	        'permalink': '/permalink/uvieth',
-	        'permalink_full': 'http://example_user.fetchapp.com/permalink/uvieth',
-	        'price': 11.11,
-	        'size_bytes': 13,
-	        'sku': 'test_1'}]
+	        'downloads_uri': 'https://accountname.fetchapp.com/api/v2/products/sku/downloads',
+	        'files_count': 1,
+	        'files_uri': 'https://accountname.fetchapp.com/api/v2/products/sku/files',
+	        'id': 'sku',
+	        'image_url': None,
+	        'name': 'Title',
+	        'order_count': 18,
+	        'paypal_add_to_cart_link': '/sell/mthievoo/ppc',
+	        'paypal_buy_now_link': '/sell/mthievoo',
+	        'paypal_view_cart_link': '/cart/pp',
+	        'price': 3.0,
+	        'sku': 'sku',
+	        'store_url': None}]
 	
-**List details of a specified item.**
+**List details of a specified product.**
  	
     fa.item_details(sku)
     
-    {   'created_at': datetime.datetime(2011, 2, 8, 8, 0, 34, tzinfo=tzutc()),
+    {   'created_at': datetime.datetime(2014, 2, 11, 18, 48, 14, tzinfo=tzutc()),
+	    'description': '54571bb1-f2d7-45d4-b463-f37ed2840980',
 	    'download_count': 0,
-	    'downloads': [],
-	    'files': [],
-	    'guid': None,
-	    'id': 'b2882527-8314-4f4f-9de7-3eee6655d8e0',
-	    'name': '386fa0f3-7214-4097-9f71-1636e19ddefe',
+	    'downloads_uri': 'https://accountname.fetchapp.com/api/v2/products/ac346f7e-93af-470f-80b8-d154442ad8b7/downloads',
+	    'files_count': 0,
+	    'files_uri': 'https://accountname.fetchapp.com/api/v2/products/ac346f7e-93af-470f-80b8-d154442ad8b7/files',
+	    'id': 'ac346f7e-93af-470f-80b8-d154442ad8b7',
+	    'image_url': None,
+	    'name': '927d9f94-1b45-4af0-8514-a3324968c4af',
 	    'order_count': 0,
-	    'price': 74.52,
-	    'sku': 'b2882527-8314-4f4f-9de7-3eee6655d8e0'}
+	    'paypal_add_to_cart_link': '/sell/xwngohgh/ppc',
+	    'paypal_buy_now_link': '/sell/xwngohgh',
+	    'paypal_view_cart_link': '/cart/pp',
+	    'price': 86.95,
+	    'sku': 'ac346f7e-93af-470f-80b8-d154442ad8b7',
+	    'store_url': None}
 
-**Delete a specified item.**
+**Delete a specified product.**
  	
     fa.item_delete(sku)
 	
 	True
 
-**Create a specified item.**
+**Create a specified product.**
  	
-    fa.item_create(sku, name, price)
+    fa.item_create(sku, name, price, description=None)
     
-	{   'created_at': datetime.datetime(2011, 2, 8, 8, 0, 34, tzinfo=tzutc()),
+	{   'created_at': datetime.datetime(2014, 2, 11, 18, 48, 14, tzinfo=tzutc()),
+	    'description': '54571bb1-f2d7-45d4-b463-f37ed2840980',
 	    'download_count': 0,
-	    'downloads': [],
-	    'files': [],
-	    'guid': None,
-	    'id': 'b2882527-8314-4f4f-9de7-3eee6655d8e0',
-	    'name': '386fa0f3-7214-4097-9f71-1636e19ddefe',
+	    'downloads_uri': 'https://accountname.fetchapp.com/api/v2/products/ac346f7e-93af-470f-80b8-d154442ad8b7/downloads',
+	    'files_count': 0,
+	    'files_uri': 'https://accountname.fetchapp.com/api/v2/products/ac346f7e-93af-470f-80b8-d154442ad8b7/files',
+	    'id': 'ac346f7e-93af-470f-80b8-d154442ad8b7',
+	    'image_url': None,
+	    'name': '927d9f94-1b45-4af0-8514-a3324968c4af',
 	    'order_count': 0,
-	    'price': 74.52,
-	    'sku': 'b2882527-8314-4f4f-9de7-3eee6655d8e0'}
+	    'paypal_add_to_cart_link': '/sell/xwngohgh/ppc',
+	    'paypal_buy_now_link': '/sell/xwngohgh',
+	    'paypal_view_cart_link': '/cart/pp',
+	    'price': 86.95,
+	    'sku': 'ac346f7e-93af-470f-80b8-d154442ad8b7',
+	    'store_url': None}
 
-**Update a specified item.**
+**Update a specified product.**
  	
-    fa.item_update(sku, new_sku=None, name=None, price=None)
+    fa.item_update(sku, new_sku=None, name=None, price=None, description=None)
 	
-	{   'created_at': datetime.datetime(2011, 2, 8, 8, 25, 38, tzinfo=tzutc()),
+	{   'created_at': datetime.datetime(2014, 2, 11, 18, 48, 14, tzinfo=tzutc()),
+	    'description': 'a1f389b2-f095-441a-a884-2f499d6b4ae6',
 	    'download_count': 0,
-	    'downloads': [],
-	    'files': [],
-	    'guid': None,
-	    'id': '090331ff-6e02-4ac9-b9e8-a5266c257e72',
-	    'name': 'd713021d-7fda-4737-b133-9d31cb7e1846',
+	    'downloads_uri': 'https://accountname.fetchapp.com/api/v2/products/c4b1e380-c6db-44a0-960a-d7e28880aac1/downloads',
+	    'files_count': 0,
+	    'files_uri': 'https://accountname.fetchapp.com/api/v2/products/c4b1e380-c6db-44a0-960a-d7e28880aac1/files',
+	    'id': 'c4b1e380-c6db-44a0-960a-d7e28880aac1',
+	    'image_url': None,
+	    'name': '4a9b1d0b-4827-44a4-b673-04850a41a8cf',
 	    'order_count': 0,
-	    'price': 34.73,
-	    'sku': '090331ff-6e02-4ac9-b9e8-a5266c257e72'}
+	    'paypal_add_to_cart_link': '/sell/xwngohgh/ppc',
+	    'paypal_buy_now_link': '/sell/xwngohgh',
+	    'paypal_view_cart_link': '/cart/pp',
+	    'price': 38.53,
+	    'sku': 'c4b1e380-c6db-44a0-960a-d7e28880aac1',
+	    'store_url': None}
 
-**List all the files for an item.**
+**List all the files for a product.**
  	
     fa.item_list_files(sku)
 
@@ -170,7 +196,7 @@ Basic Usage
 			'size_bytes': 13.0,
 			'content_type': 'binary/octet-stream',
 			'permalink': '/permalink/werwa',
-			'permalink_full': 'http://pixellent.fetchapp.com/permalink/werwa'}]
+			'permalink_full': 'http://accountname.fetchapp.com/permalink/werwa'}]
 
 **List all the downloads for an item.**
  	
@@ -184,75 +210,85 @@ Basic Usage
 	        'size_bytes': 13.0,
 	        'downloaded_at': datetime.datetime(2011, 2, 8, 4, 19, 17, tzinfo=tzutc())}]
 
+**List statistics about a product.**
+
+	fa.item_stats(sku)
+
+	{   'currency': 'USD',
+	    'download_count': 0,
+	    'files_count': 0,
+	    'id': 'ec273d73-c154-44c0-93f1-042a8cc4d3a3',
+	    'order_count': 0,
+	    'price': 61.34,
+	    'sku': 'ec273d73-c154-44c0-93f1-042a8cc4d3a3'}
+
 **List all your orders.**
  	
-    fa.orders()
+ 	# By default only shows fist 25 orders
+    fa.orders(per_page=None, page=None)
     
-	[   {   'created_at': datetime.datetime(2011, 2, 8, 7, 3, 3, tzinfo=tzutc()),
-	        'download_count': 0,
-	        'download_limit': 5,
-	        'email': 'example_user@gmail.com',
-	        'expiration_date': datetime.datetime(2011, 2, 9, 2, 3, 4, tzinfo=tzutc()),
-	        'first_name': 'ab663f29-2548-40a1-ae60-3645ac59551d',
-	        'id': 'f03e1991-890c-445b-bf13-4b036d18a8fd',
-	        'item_count': 1,
-	        'last_name': '09017348-6160-43b8-bc1a-438ac37e6465',
-	        'name': 'ab663f29-2548-40a1-ae60-3645ac59551d 09017348-6160-43b8-bc1a-438ac37e6465',
-	        'order_items': {   'order_item': {   'created_at': datetime.datetime(2011, 2, 8, 7, 3, 4, tzinfo=tzutc()),
-	                                             'download_count': 0,
-	                                             'downloads': [],
-	                                             'downloads_remaining': 5,
-	                                             'files': [   {   'download_count': 0,
-	                                                              'downloads': [   ],
-	                                                              'downloads_remaining': 5,
-	                                                              'filename': 'sample.txt',
-	                                                              'guid': 'ohjuxi',
-	                                                              'link': '/files/ohjuxi',
-	                                                              'link_full': 'http://example_user.fetchapp.com/files/ohjuxi'}],
-	                                             'guid': 'ohjuxi',
-	                                             'item_name': 'Test product',
-	                                             'link': '/files/ohjuxi',
-	                                             'link_full': 'http://example_user.fetchapp.com/files/ohjuxi',
-	                                             'order_id': 'f03e1991-890c-445b-bf13-4b036d18a8fd',
-	                                             'price': 11.11,
-	                                             'sku': 'test_1'}},
-	        'title': '2c1a9e18-604d-4b67-b837-dbcc690df72d',
-	        'total': 11.11}]
+	[   {   'created_at': datetime.datetime(2014, 2, 11, 11, 4, 28, tzinfo=tzoffset(None, -28800)),
+        'currency': 'USD',
+        'custom_1': '7349633a-0d7b-40e3-b105-ef8206252372',
+        'custom_2': '96b06cd0-816f-40fa-afe7-8919433bf2ae',
+        'custom_3': 'fd07bb07-06f9-4cee-ba74-0b8e671f7f4d',
+        'download_count': 0,
+        'download_limit': None,
+        'downloads_uri': 'https://accountname.fetchapp.com/api/v2/orders/f4d6f507-86b5-4b68-985b-7f252d196ae4/downloads',
+        'email': 'example@gmail.com.com',
+        'expiration_date': datetime.datetime(2014, 2, 11, 11, 3, 34, tzinfo=tzoffset(None, -28800)),
+        'first_name': 'e452eed3-9a40-4cc2-9e67-a60e3edce424',
+        'id': 'f4d6f507-86b5-4b68-985b-7f252d196ae4',
+        'last_name': '6ad5a0a2-9638-4bf6-849a-09848d29a0f4',
+        'link': '/get/adenax',
+        'order_items_uri': 'https://accountname.fetchapp.com/api/v2/orders/f4d6f507-86b5-4b68-985b-7f252d196ae4/order_items',
+        'product_count': 2,
+        'status': 'expired',
+        'total': 4.0,
+        'vendor_id': 'f4d6f507-86b5-4b68-985b-7f252d196ae4'},
+    {   'created_at': datetime.datetime(2014, 2, 10, 15, 22, 33, tzinfo=tzoffset(None, -28800)),
+        'currency': 'USD',
+        'custom_1': '35180e14-b29a-4374-9b95-d40ced4d1aa5',
+        'custom_2': '41d24219-56c3-4202-98f8-e13d15dcf4b2',
+        'custom_3': 'c554b450-f67d-4391-82d2-ba9df328889b',
+        'download_count': 0,
+        'download_limit': None,
+        'downloads_uri': 'https://accountname.fetchapp.com/api/v2/orders/f11d937a-c09d-4c8a-a16f-a72f2c009ca8/downloads',
+        'email': 'example@gmail.com.com',
+        'expiration_date': None,
+        'first_name': '7d6407d2-16ad-4b1e-bc70-1227af119edd',
+        'id': 'f11d937a-c09d-4c8a-a16f-a72f2c009ca8',
+        'last_name': '47ce45d2-da16-4a94-8386-4b11870666b5',
+        'link': '/get/nhijab',
+        'order_items_uri': 'https://accountname.fetchapp.com/api/v2/orders/f11d937a-c09d-4c8a-a16f-a72f2c009ca8/order_items',
+        'product_count': 1,
+        'status': 'open',
+        'total': 1.0,
+        'vendor_id': 'f11d937a-c09d-4c8a-a16f-a72f2c009ca8'}]
 
 **Details of a specified order.**
  	
     fa.order_details(order_id)
 	
-	{   'created_at': datetime.datetime(2011, 2, 8, 8, 0, 39, tzinfo=tzutc()),
-	    'download_count': 0,
-	    'download_limit': 5,
-	    'email': 'example_user@gmail.com',
-	    'expiration_date': datetime.datetime(2011, 2, 9, 3, 0, 39, tzinfo=tzutc()),
-	    'first_name': 'cb56dfb3-6d3e-487d-a384-97ac15909d70',
-	    'id': 'd1c606f0-2e62-4f8a-9a96-681ed70b1a9c',
-	    'item_count': 1,
-	    'last_name': '4b6beff0-e57c-4505-b803-929068dab043',
-	    'name': 'cb56dfb3-6d3e-487d-a384-97ac15909d70 4b6beff0-e57c-4505-b803-929068dab043',
-	    'order_items': {   'order_item': {   'created_at': datetime.datetime(2011, 2, 8, 8, 0, 40, tzinfo=tzutc()),
-	                                         'download_count': 0,
-	                                         'downloads': [],
-	                                         'downloads_remaining': 5,
-	                                         'files': [   {   'download_count': 0,
-	                                                          'downloads': [],
-	                                                          'downloads_remaining': 5,
-	                                                          'filename': 'sample.txt',
-	                                                          'guid': 'racawa',
-	                                                          'link': '/files/racawa',
-	                                                          'link_full': 'http://example_user.fetchapp.com/files/racawa'}],
-	                                         'guid': 'racawa',
-	                                         'item_name': 'Test product',
-	                                         'link': '/files/racawa',
-	                                         'link_full': 'http://example_user.fetchapp.com/files/racawa',
-	                                         'order_id': 'd1c606f0-2e62-4f8a-9a96-681ed70b1a9c',
-	                                         'price': 11.11,
-	                                         'sku': 'test_1'}},
-	    'title': '91a1f65b-828c-45ec-92a9-042d49f04397',
-	    'total': 11.11}
+	{   'created_at': datetime.datetime(2014, 2, 11, 14, 7, 8, tzinfo=tzoffset(None, -18000)),
+    'currency': 'USD',
+    'custom_1': '245c7cbd-be82-417b-990f-e872ca0eaaad',
+    'custom_2': '74e0b82c-ec03-4ff6-9905-918b35342d48',
+    'custom_3': 'b894fd6a-30d7-4ae6-ad14-2d716db54354',
+    'download_count': 0,
+    'download_limit': 5,
+    'downloads_uri': 'https://accountname.fetchapp.com/api/v2/orders/9b48baef-a8bf-4ee9-b8f4-9da107b2a18e/downloads',
+    'email': 'example@gmail.com.com',
+    'expiration_date': datetime.datetime(2014, 2, 12, 8, 7, 9, tzinfo=tzoffset(None, -18000)),
+    'first_name': '653f2018-65fb-4373-9649-0d26ae65e07f',
+    'id': '9b48baef-a8bf-4ee9-b8f4-9da107b2a18e',
+    'last_name': '292d3866-1daf-4578-bad4-c94fdbb99eac',
+    'link': '/get/rfbahs',
+    'order_items_uri': 'https://accountname.fetchapp.com/api/v2/orders/9b48baef-a8bf-4ee9-b8f4-9da107b2a18e/order_items',
+    'product_count': 2,
+    'status': 'open',
+    'total': 4.0,
+    'vendor_id': '9b48baef-a8bf-4ee9-b8f4-9da107b2a18e'}
 	
 **Delete a specified order.**
  	
@@ -272,25 +308,128 @@ Basic Usage
 
 	True
 
+**List downloads for a specified order.**
+
+	fa.order_downloads(order_id)
+
+	[   {   'filename': 'sample.txt',
+	        'id': '23570',
+			'item_sku': 'example_sku',
+	        'ip_address': '76.128.69.128',
+			'order_id': '1002',
+	        'size_bytes': 13.0,
+	        'downloaded_at': datetime.datetime(2011, 2, 8, 4, 19, 17, tzinfo=tzutc())}]
+
+**Display stats for a specified order.**
+
+	fa.order_stats(order_id)
+
+	{   'currency': 'USD',
+	    'download_count': 0,
+	    'id': '9b48baef-a8bf-4ee9-b8f4-9da107b2a18e',
+	    'product_count': 2,
+	    'total': 4.0,
+	    'vendor_id': '9b48baef-a8bf-4ee9-b8f4-9da107b2a18e'}
+
+**List all order items for a specified order.**
+
+	fa.order_list_items(order_id)
+
+	[   {   'created_at': datetime.datetime(2014, 2, 11, 11, 7, 9, tzinfo=tzoffset(None, -28800)),
+        'custom_1': None,
+        'custom_2': None,
+        'custom_3': None,
+        'download_count': 0,
+        'downloads_uri': 'https://accountname.fetchapp.com/api/v2/orders/9b48baef-a8bf-4ee9-b8f4-9da107b2a18e/order_items/10795832/downloads',
+        'files_uri': 'https://accountname.fetchapp.com/api/v2/orders/9b48baef-a8bf-4ee9-b8f4-9da107b2a18e/order_items/10795832/files',
+        'id': 10795832,
+        'license_key': None,
+        'order_id': '9b48baef-a8bf-4ee9-b8f4-9da107b2a18e',
+        'price': 1.0,
+        'product_name': 'test',
+        'sku': 'test'},
+    {   'created_at': datetime.datetime(2014, 2, 11, 11, 7, 10, tzinfo=tzoffset(None, -28800)),
+        'custom_1': None,
+        'custom_2': None,
+        'custom_3': None,
+        'download_count': 0,
+        'downloads_uri': 'https://accountname.fetchapp.com/api/v2/orders/9b48baef-a8bf-4ee9-b8f4-9da107b2a18e/order_items/10795833/downloads',
+        'files_uri': 'https://accountname.fetchapp.com/api/v2/orders/9b48baef-a8bf-4ee9-b8f4-9da107b2a18e/order_items/10795833/files',
+        'id': 10795833,
+        'license_key': None,
+        'order_id': '9b48baef-a8bf-4ee9-b8f4-9da107b2a18e',
+        'price': 3.0,
+        'product_name': 'Title',
+        'sku': 'sku'}]
+
+**Display details of a specified order's specified item.**
+
+	fa.order_item_details(order_id, sku)
+
+	{   'created_at': datetime.datetime(2014, 2, 11, 11, 7, 9, tzinfo=tzoffset(None, -28800)),
+	    'custom_1': None,
+	    'custom_2': None,
+	    'custom_3': None,
+	    'download_count': 0,
+	    'downloads_uri': 'https://accountname.fetchapp.com/api/v2/orders/9b48baef-a8bf-4ee9-b8f4-9da107b2a18e/order_items/10795832/downloads',
+	    'files_uri': 'https://accountname.fetchapp.com/api/v2/orders/9b48baef-a8bf-4ee9-b8f4-9da107b2a18e/order_items/10795832/files',
+	    'id': 10795832,
+	    'license_key': None,
+	    'order_id': '9b48baef-a8bf-4ee9-b8f4-9da107b2a18e',
+	    'price': 1.0,
+	    'product_name': 'test',
+	    'sku': 'test'}
+
+**Display the files of a specified order's specified item.**
+
+	fa.order_item_files(order_id, sku)
+
+	[   {   'download_count': 0,
+	        'downloads': [],
+	        'downloads_remaining': None,
+	        'filename': 'me.jpg',
+	        'guid': 'vgpaij',
+	        'link': '/files/vgpaij',
+	        'type': 'file'}]
+
+**Display the downloads of a specified order's specified item.**
+
+	fa.order_item_downloads(order_id, sku)
+
+	[   {   'filename': 'sample.txt',
+	        'id': '23570',
+			'item_sku': 'example_sku',
+	        'ip_address': '76.128.69.128',
+			'order_id': '1002',
+	        'size_bytes': 13.0,
+	        'downloaded_at': datetime.datetime(2011, 2, 8, 4, 19, 17, tzinfo=tzutc())}]
+
+
 **Create an order.** *skus* should be a list of SKUs to update. 
 *expiration_date* can be a string or a datetime. *send_email* should be
 a boolean.
 
-    fa.order_create(order_id, title, first_name, last_name, email, skus, expiration_date=None, send_email=None, download_limit=None, ignore_items=None)
+    fa.order_create(order_id, first_name, last_name, email, skus, custom_fields=None, expiration_date=None, send_email=None, download_limit=None, ignore_items=None)
 
-	{   'created_at': datetime.datetime(2011, 2, 8, 8, 0, 39, tzinfo=tzutc()),
+	{   'created_at': datetime.datetime(2014, 2, 11, 14, 30, 10, tzinfo=tzoffset(None, -18000)),
+	    'currency': 'USD',
+	    'custom_1': '3a3ee5fb-fa71-44b6-957e-bf20be252681',
+	    'custom_2': '3fc75c85-34a6-4e57-9cd7-7a34087c4e21',
+	    'custom_3': None,
 	    'download_count': 0,
 	    'download_limit': 5,
-	    'email': 'example_user@gmail.com',
-	    'expiration_date': datetime.datetime(2011, 2, 9, 3, 0, 39, tzinfo=tzutc()),
-	    'first_name': 'd683f6bf-fe2d-499a-91c5-3ec3d93fd28e',
-	    'id': 'd1c606f0-2e62-4f8a-9a96-681ed70b1a9c',
-	    'item_count': 0,
-	    'last_name': '731f1d84-fbc0-4899-8862-8b747f839261',
-	    'name': 'd683f6bf-fe2d-499a-91c5-3ec3d93fd28e 731f1d84-fbc0-4899-8862-8b747f839261',
-	    'order_items': '\n  ',
-	    'title': 'b6b92078-8152-4d6d-91ed-5bc288454e4f',
-	    'total': 0.0}
+	    'downloads_uri': 'https://accountname.fetchapp.com/api/v2/orders/1c4f5a71-545c-4a99-84a5-7ce9c41cb0fa/downloads',
+	    'email': 'example@gmail.com.com',
+	    'expiration_date': datetime.datetime(2014, 2, 12, 8, 30, 10, tzinfo=tzoffset(None, -18000)),
+	    'first_name': '956bcf07-cf61-449f-b091-46a302af50af',
+	    'id': '1c4f5a71-545c-4a99-84a5-7ce9c41cb0fa',
+	    'last_name': '785dcb79-bec8-4f89-bc19-7ba8d3ff4ddb',
+	    'link': '/get/mmkaix',
+	    'order_items_uri': 'https://accountname.fetchapp.com/api/v2/orders/1c4f5a71-545c-4a99-84a5-7ce9c41cb0fa/order_items',
+	    'product_count': 2,
+	    'status': 'open',
+	    'total': 4.0,
+	    'vendor_id': '1c4f5a71-545c-4a99-84a5-7ce9c41cb0fa'}
 	
 **Update a specified order.** *skus* should be a list of SKUs to update. 
 *expiration_date* can be a string or a datetime. *send_email* should be
@@ -298,54 +437,45 @@ a boolean.
 
     fa.order_update(
 		order_id=None, 
-		title=None, 
 		first_name=None, 
 		last_name=None, 
 		email=None, 
-		skus=None, 
+		skus=None,
+		custom_fields=None,
 		expiration_date=None, 
 		send_email=None, 
 		download_limit=None, 
 		ignore_items=None)
     
-    {   'created_at': datetime.datetime(2011, 2, 8, 8, 0, 39, tzinfo=tzutc()),
+    {   'created_at': datetime.datetime(2014, 2, 11, 14, 30, 10, tzinfo=tzoffset(None, -18000)),
+	    'currency': 'USD',
+	    'custom_1': '5dd1030b-ea09-46b4-9506-b376e2bd0fd3',
+	    'custom_2': 'ddbd1bdc-97e8-4824-9ca1-cccc0f5a527e',
+	    'custom_3': 'e30f6ef3-fd1a-4e2a-abde-c91f0f5d4d2c',
 	    'download_count': 0,
 	    'download_limit': 5,
-	    'email': 'example_user@gmail.com',
-	    'expiration_date': datetime.datetime(2011, 2, 9, 3, 0, 39, tzinfo=tzutc()),
-	    'first_name': 'cb56dfb3-6d3e-487d-a384-97ac15909d70',
-	    'id': 'd1c606f0-2e62-4f8a-9a96-681ed70b1a9c',
-	    'item_count': 1,
-	    'last_name': '4b6beff0-e57c-4505-b803-929068dab043',
-	    'name': 'cb56dfb3-6d3e-487d-a384-97ac15909d70 4b6beff0-e57c-4505-b803-929068dab043',
-	    'order_items': {   'order_item': {   'created_at': datetime.datetime(2011, 2, 8, 8, 0, 40, tzinfo=tzutc()),
-	                                         'download_count': 0,
-	                                         'downloads': [],
-	                                         'downloads_remaining': 5,
-	                                         'files': [   {   'download_count': 0,
-	                                                          'downloads': [],
-	                                                          'downloads_remaining': 5,
-	                                                          'filename': 'sample.txt',
-	                                                          'guid': 'racawa',
-	                                                          'link': '/files/racawa',
-	                                                          'link_full': 'http://example_user.fetchapp.com/files/racawa'}],
-	                                         'guid': 'racawa',
-	                                         'item_name': 'Test product',
-	                                         'link': '/files/racawa',
-	                                         'link_full': 'http://example_user.fetchapp.com/files/racawa',
-	                                         'order_id': 'd1c606f0-2e62-4f8a-9a96-681ed70b1a9c',
-	                                         'price': 11.11,
-	                                         'sku': 'test_1'}},
-	    'title': '91a1f65b-828c-45ec-92a9-042d49f04397',
-	    'total': 11.11}
+	    'downloads_uri': 'https://accountname.fetchapp.com/api/v2/orders/1c4f5a71-545c-4a99-84a5-7ce9c41cb0fa/downloads',
+	    'email': 'example@gmail.com.com',
+	    'expiration_date': datetime.datetime(2014, 2, 12, 8, 30, 11, tzinfo=tzoffset(None, -18000)),
+	    'first_name': '16590042-b55b-4fdd-ace9-7ca1c713699f',
+	    'id': '1c4f5a71-545c-4a99-84a5-7ce9c41cb0fa',
+	    'last_name': '6376ffe1-9ba3-4139-ab76-3b01c245bb4b',
+	    'link': '/get/mmkaix',
+	    'order_items_uri': 'https://accountname.fetchapp.com/api/v2/orders/1c4f5a71-545c-4a99-84a5-7ce9c41cb0fa/order_items',
+	    'product_count': 2,
+	    'status': 'open',
+	    'total': 4.0,
+	    'vendor_id': '1c4f5a71-545c-4a99-84a5-7ce9c41cb0fa'}
 	
-**List your uploads.**
+**List your files.**
  	
-    fa.uploads(per_page=None, page=None)
+    fa.files(per_page=None, page=None)
     
-	[   {   'filename': 'sample.txt',
-	        'id': '23570',
-	        'ip_address': '76.97.69.77',
-	        'size_bytes': 13.0,
-	        'uploaded_at': datetime.datetime(2011, 2, 8, 4, 19, 17, tzinfo=tzutc())}]
+	[   {   'content_type': 'binary/octet-stream',
+        'filename': 'me.jpg',
+        'id': 289258,
+        'permalink': '/permalink/dnooma',
+        'size_bytes': 182808,
+        'type': 'file',
+        'url': None}]
 	

@@ -34,7 +34,7 @@ class InvalidHTTPRequestTypeException(Exception):
 class FetchApp(object):
     """
     Support for the FetchApp API.
-    http://www.fetchapp.com/pages/help-api
+    http://www.fetchapp.com/pages/help-api2
     """
 
     host = "app.fetchapp.com"
@@ -53,7 +53,7 @@ class FetchApp(object):
         etree.SubElement(account, "email").text = unicode(email)
         etree.SubElement(account, "url").text = unicode(url)
         request = urllib2.Request(
-            "http://%s%s" % (self.host, '/api/account/create'), 
+            "http://%s%s" % (self.host, '/api/v2/account/create'), 
             data=etree.tostring(account, encoding="utf-8", xml_declaration=True))
         request.add_header('Content-Type', "application/xml")
         xmldoc = self._make_request(request)
@@ -62,33 +62,33 @@ class FetchApp(object):
     def account(self):
         """Information about your account."""
         
-        path = "/api/account"
+        path = "/api/v2/account"
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
 
     def new_token(self):
         """Generate a new API token (this replaces your existing one)"""
         
-        path = "/api/new_token"
+        path = "/api/v2/new_token"
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
         
     def downloads(self, per_page=None, page=None):
         """List your downloads"""
         
-        path = "/api/downloads"
+        path = "/api/v2/downloads"
         parameters = {}
         if per_page is not None:
             parameters["per_page"] = int(per_page)
         if page is not None:
             parameters["page"] = int(page)
         xmldoc = self._call(path, parameters=parameters)
-        return self._deserialize(xmldoc)        
+        return self._deserialize(xmldoc)
     
     def items(self, per_page=None, page=None, sku=None):
-        """List your items"""
+        """List your products"""
         
-        path = "/api/items"
+        path = "/api/v2/products"
         if sku is not None:
             path = "%s/:%s" % (path, sku)
         parameters = {}
@@ -100,109 +100,184 @@ class FetchApp(object):
         return self._deserialize(xmldoc)
 
     def item_details(self, sku):
-        """List details of a specified item"""
+        """List details of a specified product"""
         
-        path = "/api/items/%s" % sku
+        path = "/api/v2/products/%s" % sku
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
     
     def item_delete(self, sku):
-        """Delete a specified item"""
+        """Delete a specified product"""
         
-        path = "/api/items/%s/delete" % sku
+        path = "/api/v2/products/%s/delete" % sku
         xmldoc = self._call(path, method="delete")
         return self._deserialize(xmldoc) == "Ok."
     
-    def item_create(self, sku, name, price):
-        """Create a specified item"""
+    def item_create(self, sku, name, price, description=None):
+        """Create a specified product"""
         
-        path = "/api/items/create"
-        item = etree.Element("item")
-        etree.SubElement(item, "sku").text = unicode(sku)
-        etree.SubElement(item, "name").text = unicode(name)
-        etree.SubElement(item, "price", attrib={"type":"float"}).text = unicode(price)
+        path = "/api/v2/products/create"
+        product = etree.Element("product")
+        etree.SubElement(product, "sku").text = unicode(sku)
+        etree.SubElement(product, "name").text = unicode(name)
+        etree.SubElement(product, "price", attrib={"type":"float"}).text = unicode(price)
+        etree.SubElement(product, "description").text = unicode(description)
         xmldoc = self._call(
             path, 
-            data=etree.tostring(item, encoding="utf-8", xml_declaration=True), 
+            data=etree.tostring(product, encoding="utf-8", xml_declaration=True), 
             method="post",
             content_type="application/xml")
         return self._deserialize(xmldoc)
     
-    def item_update(self, sku, new_sku=None, name=None, price=None):
+    def item_update(self, sku, new_sku=None, name=None, price=None, description=None):
         """Update a specified item"""
         
-        path = "/api/items/%s" % sku
-        item = etree.Element("item")
+        path = "/api/v2/products/%s" % sku
+        product = etree.Element("product")
         if new_sku is not None:
-            etree.SubElement(item, "sku").text = unicode(new_sku)
+            etree.SubElement(product, "sku").text = unicode(new_sku)
         if name is not None:
-            etree.SubElement(item, "name").text = unicode(name)
+            etree.SubElement(product, "name").text = unicode(name)
         if price is not None:
-            etree.SubElement(item, "price", attrib={"type":"float"}).text = unicode(price)
+            etree.SubElement(product, "price", attrib={"type":"float"}).text = unicode(price)
+        if description is not None:
+            etree.SubElement(product, "description").text = unicode(description)
         xmldoc = self._call(    
             path, 
-            data=etree.tostring(item, encoding="utf-8", xml_declaration=True), 
+            data=etree.tostring(product, encoding="utf-8", xml_declaration=True), 
             method="put",
             content_type="application/xml")
         return self._deserialize(xmldoc)        
     
     def item_list_files(self, sku):
-        """List all the files for an item."""
+        """List all the files for a product."""
         
-        path = "/api/items/%s/files" % sku
+        path = "/api/v2/products/%s/files" % sku
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)       
 
     def item_list_downloads(self, sku):
-        """List all the downloads for an item"""
+        """List all the downloads for a product"""
         
-        path = "/api/items/%s/downloads" % sku
+        path = "/api/v2/products/%s/downloads" % sku
+        xmldoc = self._call(path)
+        return self._deserialize(xmldoc)
+
+    def item_stats(self, sku):
+        """List statistics about a product"""
+        path = "/api/v2/products/%s/stats" % sku
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)
     
-    def orders(self):
+    #by default, only shows first 25 orders
+    def orders(self, per_page=None, page=None):
         """List all your orders"""
-        
-        path = "/api/orders"
-        xmldoc = self._call(path)
+        path = "/api/v2/orders"
+        parameters = {}
+        if per_page is not None:
+            parameters["per_page"] = int(per_page)
+        if page is not None:
+            parameters["page"] = int(page)
+        xmldoc = self._call(path, parameters=parameters)
         return self._deserialize(xmldoc)       
     
     def order_details(self, order_id):
         """Details of a specified order"""
         
-        path = "/api/orders/%s" % order_id
+        path = "/api/v2/orders/%s" % order_id
         xmldoc = self._call(path)
         return self._deserialize(xmldoc)        
     
     def order_delete(self, order_id):
         """Delete a specified order"""
         
-        path = "/api/orders/%s/delete" % order_id
+        path = "/api/v2/orders/%s/delete" % order_id
         xmldoc = self._call(path, method="delete")
         return self._deserialize(xmldoc) == "Ok."
 
     def order_expire(self, order_id):
         """Expire a specified order"""
         
-        path = "/api/orders/%s/expire" % order_id
+        path = "/api/v2/orders/%s/expire" % order_id
         xmldoc = self._call(path, method="post")
         return self._deserialize(xmldoc) == "Ok."
 
     def order_send_email(self, order_id):
         """Send download email of a specified order"""
         
-        path = "/api/orders/%s/send_email" % order_id
+        path = "/api/v2/orders/%s/send_email" % order_id
         xmldoc = self._call(path, method="post")
         return self._deserialize(xmldoc) == "Ok."
+
+    def order_downloads(self, order_id):
+        """List downloads for a specified order"""
+        path = "/api/v2/orders/%s/downloads" % order_id
+        xmldoc = self._call(path)
+        return self._deserialize(xmldoc)  
+
+    def order_stats(self, order_id):
+        """Display stats for a specified order"""
+        path = "/api/v2/orders/%s/stats" % order_id
+        xmldoc = self._call(path)
+        return self._deserialize(xmldoc) 
+
+    def order_list_items(self, order_id):
+        """List all order items for a specified order"""
+        path = "/api/v2/orders/%s/order_items" % order_id
+        xmldoc = self._call(path)
+        return self._deserialize(xmldoc)
+
+    def get_order_item_id(self, order_id, sku):
+        """Return a specified order's specified item's ID"""
+        # order item has an id separate from that of the product ID
+        # need to be able to access the order item IDs
+        return_val = None
+        items = self.order_list_items(order_id)
+        for item in items:
+            if item["sku"] == sku:
+                return_val = item["id"]
+                break
+        if return_val == None:
+                raise FetchAppOrderException("sku %s not found in order %s" % (sku, order_id))
+        return return_val
+
+    def order_item_details(self, order_id, sku):
+        """Display details of a specified order's specified item"""
+        item_id = self.get_order_item_id(order_id, sku)
+        path = "/api/v2/orders/%s/order_items/%s" % (order_id, item_id)
+        xmldoc = self._call(path)
+        return self._deserialize(xmldoc)
+
+    def order_item_files(self, order_id, sku):
+        """Display the files of a specified order's specified item"""
+        item_id = self.get_order_item_id(order_id, sku)
+        path = "/api/v2/orders/%s/order_items/%s/files" % (order_id, item_id)
+        xmldoc = self._call(path)
+        return self._deserialize(xmldoc)
+
+    def order_item_downloads(self, order_id, sku):
+        """Display the downloads of a specified order's specified item"""
+        item_id = self.get_order_item_id(order_id, sku)
+        path = "/api/v2/orders/%s/order_items/%s/downloads" % (order_id, item_id)
+        xmldoc = self._call(path)
+        return self._deserialize(xmldoc)
+
+    # FetchAppRequestException: Error expiring order item: undefined method `expire' for #<OrderItem:0x7fc4a5af43f0>, have to look into this...
+    # def order_item_expire(self, order_id, sku):
+    #     """Expire a specified item from a specified order"""
+    #    item_id = self.get_order_item_id(order_id, sku)
+    #    path = "/api/v2/orders/%s/order_items/%s/expire" % (order_id, item_id)
+    #    xmldoc = self._call(path, method="post")
+    #    return self._deserialize(xmldoc) == "Ok."
         
     def _order_xmldoc(self, 
             order_id=None, 
             new_order_id=None,
-            title=None,
             first_name=None,
             last_name=None,
             email=None,
             skus=None,
+            custom_fields=None,
             expiration_date=None,
             send_email=None,
             download_limit=None,
@@ -212,14 +287,17 @@ class FetchApp(object):
         order = etree.Element("order")
         if order_id is not None:
             etree.SubElement(order, "id").text = unicode(order_id)
-        if title is not None:
-            etree.SubElement(order, "title").text = unicode(title)
         if first_name is not None:
             etree.SubElement(order, "first_name").text = unicode(first_name)
         if last_name is not None:
             etree.SubElement(order, "last_name").text = unicode(last_name)
         if email is not None:
             etree.SubElement(order, "email").text = unicode(email)
+        if custom_fields is not None:
+            num = 1
+            for field in custom_fields:
+                etree.SubElement(order, "custom_%s" % num).text = unicode(field)
+                num += 1
         if send_email is not None:
             send_email = int(send_email)
             etree.SubElement(order, "send_email").text = unicode(send_email)
@@ -254,26 +332,26 @@ class FetchApp(object):
 
     def order_create(self, 
             order_id, 
-            title,
             first_name,
             last_name,
             email,
             skus,
+            custom_fields=None,
             expiration_date=None,
             send_email=None,
             download_limit=None,
             ignore_items=None):
         """Create an order"""
         
-        path = "/api/orders/create"
+        path = "/api/v2/orders/create"
         if not isinstance(skus, list):
             raise FetchAppOrderException("skus must be a list")
         order = self._order_xmldoc(
             order_id=order_id, 
-            title=title,
             first_name=first_name,
             last_name=last_name,
             email=email,
+            custom_fields=custom_fields,
             skus=skus,
             expiration_date=expiration_date,
             send_email=send_email,
@@ -288,23 +366,23 @@ class FetchApp(object):
         
     def order_update(self,
             order_id=None, 
-            title=None,
             first_name=None,
             last_name=None,
             email=None,
             skus=None,
+            custom_fields=None,
             expiration_date=None,
             send_email=None,
             download_limit=None,
             ignore_items=None):
         """Update a specified order"""
         
-        path = "/api/orders/%s/update" % (order_id)
+        path = "/api/v2/orders/%s/update" % (order_id)
         order = self._order_xmldoc(
-            title=title,
             first_name=first_name,
             last_name=last_name,
             email=email,
+            custom_fields=custom_fields,
             skus=skus,
             expiration_date=expiration_date,
             send_email=send_email,
@@ -317,10 +395,10 @@ class FetchApp(object):
             content_type="application/xml")
         return self._deserialize(xmldoc)
     
-    def uploads(self, per_page=None, page=None):
-        """List your uploads"""
+    def files(self, per_page=None, page=None):
+        """List your files"""
         
-        path = "/api/uploads"
+        path = "/api/v2/files"
         parameters = {}
         if per_page is not None:
             parameters["per_page"] = int(per_page)
