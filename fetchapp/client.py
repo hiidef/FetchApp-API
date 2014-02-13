@@ -170,7 +170,7 @@ class FetchApp(object):
         return self._deserialize(xmldoc)
     
     #by default, only shows first 25 orders
-    def orders(self, per_page=None, page=None):
+    def orders(self, per_page=None, page=None, status=None):
         """List all your orders"""
         path = "/api/v2/orders"
         parameters = {}
@@ -178,6 +178,10 @@ class FetchApp(object):
             parameters["per_page"] = int(per_page)
         if page is not None:
             parameters["page"] = int(page)
+        if status == "open" or status == "expired":
+            parameters["status"] = status
+        elif status is not None:
+            raise FetchAppOrderException("Invalid status \"%s\", choices are \"open\" or \"expired\".  Leave parameter unset to return both types." % status)
         xmldoc = self._call(path, parameters=parameters)
         return self._deserialize(xmldoc)       
     

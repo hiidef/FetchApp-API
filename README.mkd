@@ -218,9 +218,9 @@ Basic Usage
 	    'sku': 'ec273d73-c154-44c0-93f1-042a8cc4d3a3'}
 
 **List all your orders.**
- 	
- 	# By default only shows fist 25 orders
-    fa.orders(per_page=None, page=None)
+ 
+ 	# By default only shows most recent 25 orders
+    fa.orders(per_page=None, page=None, status=None)
     
 	[   {   'created_at': datetime.datetime(2014, 2, 11, 11, 4, 28, tzinfo=tzoffset(None, -28800)),
         'currency': 'USD',
